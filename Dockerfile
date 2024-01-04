@@ -1,9 +1,7 @@
-ARG PYTHON_VERSION=3.12
-
 ##
 # base
 ##
-FROM python:${PYTHON_VERSION}-slim AS base
+FROM python:3.12-slim AS base
 LABEL maintainer="wyextay@gmail.com"
 
 # set up user
@@ -56,7 +54,7 @@ RUN --mount=type=cache,target=/root/.cache/pypoetry \
 USER ${USER}
 COPY --chown=${USER}:${USER} src src
 RUN --mount=type=cache,target=/root/.cache/pypoetry \
-    poetry install --only root
+    poetry install --only-root
 
 EXPOSE 8000
 ARG ENVIRONMENT=dev
