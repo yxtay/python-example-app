@@ -1,0 +1,57 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "example-app"
+version = "0.1.0"
+description = "Python example app incorporating best practices"
+authors = ["yxtay <wyextay@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = { extras = ["all"], version = "*" }
+gunicorn = "*"
+loguru = "*"
+sqlmodel = "*"
+typer = { extras = ["all"], version = "*" }
+
+[tool.poetry.group.dev.dependencies]
+mypy = "*"
+pre-commit = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-env = "*"
+pytest-xdist = "*"
+ruff = "*"
+commitizen = "*"
+
+[tool.isort]
+profile = "black"
+float_to_top = true
+src_paths = [".", "src", "tests"]
+
+[tool.pytest.ini_options]
+addopts = ["-ra", "-v", "--strict-markers", "--import-mode=importlib", "--cov"]
+
+[tool.ruff]
+fix = true
+src = [".", "src", "tests"]
+extend-include = ["*.ipynb"]
+select = ["ALL"]
+ignore = [
+    "D",      # pydocstyle
+    "E501",   # line-too-long
+    "COM812", # missing-trailing-comma # conflicts with ruff formatter
+    "ISC001", # single-line-implicit-string-concatenation # conflicts with ruff formatter
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = [
+    "S101", # assert
+]
