@@ -111,6 +111,9 @@ jobs:
 
     docker:
         name: docker
+        permissions:
+            contents: read
+            packages: write
         runs-on: ubuntu-latest
         env:
             GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
