@@ -41,9 +41,14 @@ jobs:
         name: label size
         permissions:
             contents: read
+            issues: read
             pull-requests: write
         runs-on: ubuntu-latest
         steps:
             - uses: codelytv/pr-size-labeler@v1
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  files_to_ignore: |
+                      package-lock.json
+                      *.lock
+                      docs/**
