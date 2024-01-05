@@ -2,12 +2,12 @@ name: pr
 
 on:
     # enable when making changes to this workflow
-    pull_request:
-        types:
-            - opened
-            - edited
-            - reopened
-            - synchronize
+    # pull_request:
+    #     types:
+    #         - opened
+    #         - edited
+    #         - reopened
+    #         - synchronize
     pull_request_target:
         types:
             - opened
@@ -41,14 +41,14 @@ jobs:
         name: label size
         permissions:
             contents: read
-            issues: read
+            issues: write
             pull-requests: write
         runs-on: ubuntu-latest
         steps:
             - uses: codelytv/pr-size-labeler@v1
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  files_to_ignore: |
+                  files_to_ignore: >
                       package-lock.json
                       *.lock
                       docs/**
