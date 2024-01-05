@@ -8,7 +8,6 @@ version = "0.1.0"
 description = "Python example app incorporating best practices"
 authors = ["yxtay <wyextay@gmail.com>"]
 license = "MIT"
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -34,7 +33,16 @@ float_to_top = true
 src_paths = [".", "src", "tests"]
 
 [tool.pytest.ini_options]
-addopts = ["-ra", "-v", "--strict-markers", "--import-mode=importlib", "--cov"]
+addopts = [
+    "-ra",
+    "-v",
+    "--strict-markers",
+    "--import-mode=importlib",
+    "--cov",
+    "src",
+    "--cov-report",
+    "html",
+]
 
 [tool.ruff]
 fix = true

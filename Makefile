@@ -69,7 +69,7 @@ lint:
 
 .PHONY: test
 test:
-	python -m pytest $(TEST_DIR) --cov $(SOURCE_DIR)
+	python -m pytest
 
 .PHONY: run-ci
 run-ci: deps-install-python lint test  ## run ci
