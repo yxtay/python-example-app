@@ -8,7 +8,6 @@ version = "0.1.0"
 description = "Python example app incorporating best practices"
 authors = ["yxtay <wyextay@gmail.com>"]
 license = "MIT"
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
