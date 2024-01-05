@@ -2,12 +2,12 @@ name: pr
 
 on:
     # enable when making changes to this workflow
-    # pull_request:
-    #     types:
-    #         - opened
-    #         - edited
-    #         - reopened
-    #         - synchronize
+    pull_request:
+        types:
+            - opened
+            - edited
+            - reopened
+            - synchronize
     pull_request_target:
         types:
             - opened
@@ -41,6 +41,7 @@ jobs:
         name: label size
         permissions:
             contents: read
+            issues: write
             pull-requests: write
         runs-on: ubuntu-latest
         steps:
