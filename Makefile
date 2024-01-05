@@ -33,15 +33,11 @@ help:  ## print help message
 .PHONY: deps-install-python
 deps-install-python:
 	poetry install
-	pip list
+	pythno -m pip list
 
 .PHONY: install-hooks
 install-hooks:
 	python -m pre_commit install --install-hooks
-	wget -O .git/hooks/prepare-commit-msg https://raw.githubusercontent.com/commitizen-tools/commitizen/master/hooks/prepare-commit-msg.py
-	chmod +x .git/hooks/prepare-commit-msg
-	wget -O .git/hooks/post-commit https://raw.githubusercontent.com/commitizen-tools/commitizen/master/hooks/post-commit.py
-	chmod +x .git/hooks/post-commit
 
 .PHONY: deps-install
 deps-install: deps-install-python install-hooks ## install dependencies

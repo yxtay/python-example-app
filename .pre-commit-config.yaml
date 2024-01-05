@@ -52,7 +52,7 @@ repos:
             args: [--remove]
           - id: name-tests-test
             args: [--pytest-test-first]
-          #   - id: requirements-txt-fixer  # conflicts with poetry
+          # - id: requirements-txt-fixer  # conflicts with poetry
 
           # configs
           - id: check-json
