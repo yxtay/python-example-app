@@ -26,7 +26,7 @@ app = typer.Typer()
 
 
 @app.command()
-def main(key: str) -> str | None:
+def main(key: str) -> str:
     from .logger import get_logger
 
     logger = get_logger()
@@ -35,7 +35,7 @@ def main(key: str) -> str | None:
         value = getattr(settings, key.lower())
     except AttributeError:
         logger.info("invalid settings key: {key}", key=key)
-        return None
+        return ""
     else:
         logger.debug("settings: {key} = {value}", key=key, value=value)
         print(value)

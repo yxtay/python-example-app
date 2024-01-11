@@ -1,9 +1,16 @@
 import subprocess
+import sys
+
+import pytest
+from pytest_mock import MockerFixture
 
 from example_app import gunicorn
 
+pytest.importorskip("fcntl", reason="module not found: `fcntl`")
 
-def test_gunicorn_app() -> None:
+
+def test_gunicorn_app(mocker: MockerFixture) -> None:
+    mocker.patch.object(sys, "argv", ["gunicorn"])
     gunicorn.Application()
 
 
