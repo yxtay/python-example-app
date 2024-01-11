@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-    web_dev:
+    app_dev:
         image: ghcr.io/yxtay/python-example-app:dev
         build:
             args:
@@ -16,7 +16,7 @@ services:
             - .:/opt/app
         profiles:
             - dev
-    web_ci:
+    app_ci:
         image: ghcr.io/yxtay/python-example-app:ci
         build:
             args:
@@ -31,7 +31,7 @@ services:
             - "8000:8000"
         profiles:
             - ci
-    web:
+    app:
         image: ghcr.io/yxtay/python-example-app:main
         build:
             args:
