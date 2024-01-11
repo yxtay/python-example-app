@@ -14,3 +14,4 @@ def test_settings_cli_invalid() -> None:
     runner = CliRunner()
     result = runner.invoke(app, ["none"])
     assert result.exit_code == 0
+    assert result.stdout == ""

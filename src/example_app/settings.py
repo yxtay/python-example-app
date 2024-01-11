@@ -34,7 +34,7 @@ def main(key: str) -> str:
     try:
         value = getattr(settings, key.lower())
     except AttributeError:
-        logger.info("invalid settings key: {key}", key=key)
+        logger.warning("invalid settings key: {key}", key=key)
         return ""
     else:
         logger.debug("settings: {key} = {value}", key=key, value=value)

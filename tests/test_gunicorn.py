@@ -6,7 +6,8 @@ from pytest_mock import MockerFixture
 
 from example_app import gunicorn
 
-pytest.importorskip("fcntl", reason="module not found: `fcntl`")
+if sys.platform.startswith("win"):
+    pytest.skip("gunicorn does not work on windows", allow_module_level=True)
 
 
 def test_gunicorn_app(mocker: MockerFixture) -> None:
