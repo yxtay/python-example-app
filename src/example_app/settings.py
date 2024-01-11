@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+import rich
 import typer
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from rich import print
 
 
 class Settings(BaseSettings):
@@ -38,7 +38,7 @@ def main(key: str) -> str:
         return ""
     else:
         logger.debug("settings: {key} = {value}", key=key, value=value)
-        print(value)
+        rich.print(value)
         return value
 
 

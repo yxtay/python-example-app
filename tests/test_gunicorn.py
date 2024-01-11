@@ -1,5 +1,4 @@
 import subprocess
-import sys
 
 import pytest
 from pytest_mock import MockerFixture
@@ -8,7 +7,7 @@ gunicorn = pytest.importorskip("example_app.gunicorn")
 
 
 def test_gunicorn_app(mocker: MockerFixture) -> None:
-    mocker.patch.object(sys, "argv", ["gunicorn"])
+    mocker.patch("sys.argv", ["gunicorn"])
     gunicorn.Application()
 
 
