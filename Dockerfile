@@ -59,7 +59,7 @@ RUN --mount=type=cache,target=/root/.cache/pypoetry \
 EXPOSE 8000
 ARG ENVIRONMENT=dev
 ENV ENVIRONMENT ${ENVIRONMENT}
-CMD ["gunicorn", "src.web:app", "-c", "src/gunicorn_conf.py"]
+CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf"]
 
 ##
 # ci
@@ -90,4 +90,4 @@ COPY --from=dev --chown=${USER}:${USER} ${APP_HOME} ${APP_HOME}
 EXPOSE 8000
 ARG ENVIRONMENT=prod
 ENV ENVIRONMENT=${ENVIRONMENT}
-CMD ["gunicorn", "src.web:app", "-c", "src/gunicorn_conf.py"]
+CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf"]

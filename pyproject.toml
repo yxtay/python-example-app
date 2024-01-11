@@ -38,10 +38,7 @@ addopts = [
     "-v",
     "--strict-markers",
     "--import-mode=importlib",
-    "--cov",
-    "src",
-    "--cov-report",
-    "html",
+    "--cov=src",
 ]
 
 [tool.ruff]

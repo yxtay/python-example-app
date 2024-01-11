@@ -12,14 +12,9 @@ SHELL := bash
 
 ENVIRONMENT ?= dev
 ARGS =
-APP_NAME = $(shell python -m src.config app_name)
+APP_NAME = example_app
 SOURCE_DIR := src
 TEST_DIR := tests
-
-IMAGE_HOST = $(shell python -m src.config image_host)
-IMAGE_REPO = $(shell python -m src.config image_repo)
-IMAGE_NAME = $(IMAGE_HOST)/$(IMAGE_REPO)/$(APP_NAME)
-IMAGE_TAG ?= latest
 
 ## formula
 
@@ -76,17 +71,13 @@ run-ci: deps-install-python lint test  ## run ci
 
 ## app
 
-.PHONY: run-task
-run-task:  ## run python task
-	python -m src.task
-
 .PHONY: run-web-dev
 run-web-dev:
-	python -m uvicorn src.web:app --reload
+	python -m ${APP_NAME}.gunicorn
 
 .PHONY: run-web
 run-web:  ## run python web
-	python -m gunicorn src.web:app -c src/gunicorn_conf.py
+	python -m gunicorn -c python:${APP_NAME}.gunicorn_conf
 
 .PHONY: run
 run: run-web  ## run main python app
@@ -95,11 +86,11 @@ run: run-web  ## run main python app
 
 .PHONY: dc-build
 dc-build: requirements.txt  ## build app image
-	IMAGE_TAG=$(IMAGE_TAG) docker compose build web_dev web_ci web
+	docker compose build web_dev web_ci web
 
 .PHONY: dc-push
 dc-push:
-	IMAGE_TAG=$(IMAGE_TAG) docker compose push web_dev web
+	docker compose push web_dev web
 
 .PHONY: dc-test
 dc-ci:
