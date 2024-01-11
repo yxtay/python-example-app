@@ -4,10 +4,7 @@ import sys
 import pytest
 from pytest_mock import MockerFixture
 
-from example_app import gunicorn
-
-if sys.platform.startswith("win"):
-    pytest.skip("gunicorn does not work on windows", allow_module_level=True)
+gunicorn = pytest.importorskip("example_app.gunicorn")
 
 
 def test_gunicorn_app(mocker: MockerFixture) -> None:
