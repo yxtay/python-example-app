@@ -33,6 +33,10 @@ profile = "black"
 float_to_top = true
 src_paths = [".", "src", "tests"]
 
+[[tool.mypy.overrides]]
+module = "gunicorn"
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 addopts = [
     "-ra",
