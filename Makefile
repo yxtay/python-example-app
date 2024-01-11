@@ -28,26 +28,16 @@ help:  ## print help message
 .PHONY: deps-install-python
 deps-install-python:
 	poetry install
-	pythno -m pip list
-
-.PHONY: install-hooks
-install-hooks:
-	python -m pre_commit install --install-hooks
+	python -m pip list
 
 .PHONY: deps-install
-deps-install: deps-install-python install-hooks ## install dependencies
+deps-install: deps-install-python  ## install dependencies
+	python -m pre_commit install --install-hooks
 
 .PHONY: deps-update
 deps-update:
 	poetry update
-	poetry export --format requirements.txt --output requirements.txt --without-hashes
 	python -m pre_commit autoupdate
-
-requirements.txt: poetry.lock
-	poetry export --format requirements.txt --output requirements.txt --without-hashes
-
-requirements-dev.txt: poetry.lock
-	poetry export --with dev --format requirements.txt --output requirements-dev.txt --without-hashes
 
 ## checks
 
@@ -71,38 +61,35 @@ run-ci: deps-install-python lint test  ## run ci
 
 ## app
 
-.PHONY: run-web-dev
-run-web-dev:
+.PHONY: run-dev
+run-dev:
 	python -m ${APP_NAME}.gunicorn
 
-.PHONY: run-web
-run-web:  ## run python web
-	python -m gunicorn -c python:${APP_NAME}.gunicorn_conf
-
 .PHONY: run
-run: run-web  ## run main python app
+run:  ## run main python app
+	python -m gunicorn -c python:${APP_NAME}.gunicorn_conf
 
 ## docker-compose
 
 .PHONY: dc-build
-dc-build: requirements.txt  ## build app image
-	docker compose build web_dev web_ci web
+dc-build:  ## build app image
+	docker compose build app_dev app_ci app
 
 .PHONY: dc-push
 dc-push:
-	docker compose push web_dev web
+	docker compose push app_dev app
 
 .PHONY: dc-test
 dc-ci:
-	docker compose run --build --rm web_ci
+	docker compose run --build --rm app_ci
 
 .PHONY: dc-up
 dc-up:  ## run app image
-	docker compose up web_dev
+	docker compose up app_dev
 
 .PHONY: dc-exec
 dc-exec:
-	docker compose exec web_dev /bin/bash
+	docker compose exec app_dev /bin/bash
 
 .PHONY: dc-stop
 dc-stop:
