@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+import rich
 import typer
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from rich import print
 
 
 class Settings(BaseSettings):
@@ -26,7 +26,7 @@ app = typer.Typer()
 
 
 @app.command()
-def main(key: str) -> str | None:
+def main(key: str) -> str:
     from .logger import get_logger
 
     logger = get_logger()
@@ -34,11 +34,11 @@ def main(key: str) -> str | None:
     try:
         value = getattr(settings, key.lower())
     except AttributeError:
-        logger.info("invalid settings key: {key}", key=key)
-        return None
+        logger.warning("invalid settings key: {key}", key=key)
+        return ""
     else:
         logger.debug("settings: {key} = {value}", key=key, value=value)
-        print(value)
+        rich.print(value)
         return value
 
 

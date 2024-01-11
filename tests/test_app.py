@@ -1,5 +1,5 @@
 from example_app import main
 
 
-def test() -> None:
+def test_app() -> None:
     main.fastapi_app()

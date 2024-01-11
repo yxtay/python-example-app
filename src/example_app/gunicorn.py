@@ -20,15 +20,18 @@ class GunicornLogger(glogging.Logger):
 
 
 class Application(gunicorn.app.wsgiapp.WSGIApplication):
-    def __init__(self: Application) -> None:
-        self.options = {
+    def __init__(self: Application, **kwargs: str | bool) -> None:
+        defaults = {
             "wsgi_app": f"{settings.app_name}.main:app",
             "bind": f"{settings.host}:{settings.port}",
             "worker_class": "uvicorn.workers.UvicornWorker",
             "logger_class": f"{settings.app_name}.gunicorn.GunicornLogger",
-            "reload": True,
         }
-        super().__init__()
+        self.options = {
+            **defaults,
+            **kwargs,
+        }
+        super().__init__("%(prog)s [OPTIONS] [APP_MODULE]", prog="gunicorn")
 
     def load_config(self: Application) -> None:
         for key, value in self.options.items():
@@ -39,4 +42,4 @@ class Application(gunicorn.app.wsgiapp.WSGIApplication):
 
 
 if __name__ == "__main__":
-    Application().run()
+    Application(reload=True).run()
