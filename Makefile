@@ -75,10 +75,6 @@ run:  ## run main python app
 dc-build:  ## build app image
 	docker compose build app_dev app_ci app
 
-.PHONY: dc-push
-dc-push:
-	docker compose push app_dev app
-
 .PHONY: dc-test
 dc-ci:
 	docker compose run --build --rm app_ci
@@ -90,11 +86,3 @@ dc-up:  ## run app image
 .PHONY: dc-exec
 dc-exec:
 	docker compose exec app_dev /bin/bash
-
-.PHONY: dc-stop
-dc-stop:
-	docker compose stop
-
-.PHONY: dc-down
-dc-down:
-	docker compose down
