@@ -6,7 +6,7 @@ from pytest_mock import MockerFixture
 try:
     from example_app import gunicorn
 except ImportError as e:
-    pytest.skip(e, allow_module_level=True)
+    pytest.skip(str(e), allow_module_level=True)
 
 
 def test_gunicorn_app(mocker: MockerFixture) -> None:
