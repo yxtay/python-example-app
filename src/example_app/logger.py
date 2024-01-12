@@ -42,6 +42,8 @@ def get_logger() -> loguru.Logger:
     logger.add(
         sys.stderr, level=settings.loguru_level.upper(), enqueue=settings.loguru_enqueue
     )
+    atexit.register(logger.complete)
+
     logging.basicConfig(
         level=settings.loguru_level.upper(), handlers=[InterceptHandler()]
     )
@@ -51,5 +53,4 @@ def get_logger() -> loguru.Logger:
             _logger.handlers = [InterceptHandler()]
             _logger.propagate = False
 
-    atexit.register(logger.complete)
     return logger

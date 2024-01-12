@@ -15,8 +15,7 @@ class GunicornLogger(glogging.Logger):
 
         get_logger()
         for name in ["gunicorn.error", "gunicorn.access"]:
-            logging_logger = logging.getLogger(name)
-            logging_logger.handlers = [InterceptHandler(depth=1)]
+            logging.getLogger(name).handlers = [InterceptHandler(depth=1)]
 
 
 class Application(gunicorn.app.wsgiapp.WSGIApplication):
