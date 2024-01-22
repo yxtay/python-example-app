@@ -95,7 +95,7 @@ jobs:
 
             - name: Poetry cache
               if: ${{ steps.setup-python.outputs.cache-hit != 'true' }}
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: ${{ env.POETRY_CACHE_DIR }}
                   key: pypoetry-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
@@ -123,7 +123,7 @@ jobs:
               uses: docker/setup-buildx-action@v3
 
             - name: Cache buildkit mounts
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: |
                       var-cache-apt
