@@ -10,13 +10,13 @@ ARG UID=1000
 RUN useradd --no-create-home --shell /bin/false --uid ${UID} ${USER}
 
 # set up environment
-ARG VIRTUAL_ENV=/opt/venv
+ARG VIRTUAL_ENV=/work/venv
 ENV PYTHONFAULTHANDLER=1 \
     PYTHONUNBUFFERED=1 \
     VIRTUAL_ENV=${VIRTUAL_ENV} \
     PATH=${VIRTUAL_ENV}/bin:${PATH}
 
-ARG APP_HOME=/opt/app
+ARG APP_HOME=/work/app
 WORKDIR ${APP_HOME}
 
 ##
@@ -24,19 +24,19 @@ WORKDIR ${APP_HOME}
 ##
 FROM base AS dev
 
+ARG DEBIAN_FRONTEND=noninteractive
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
     apt-get update && \
     apt-get install --no-install-recommends -y \
         build-essential \
-    curl \
+        curl \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_COMPILE=1 \
-    POETRY_NO_INTERACTION=1 \
-    POETRY_VIRTUALENVS_CREATE=0
+    POETRY_NO_INTERACTION=1
 
 # set up python
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -59,7 +59,7 @@ RUN --mount=type=cache,target=/root/.cache/pypoetry \
 EXPOSE 8000
 ARG ENVIRONMENT=dev
 ENV ENVIRONMENT ${ENVIRONMENT}
-CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf"]
+CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf", "--reload"]
 
 ##
 # ci
