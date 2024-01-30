@@ -119,8 +119,12 @@ jobs:
             GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
 
         steps:
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v3
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  sparse-checkout: |
+                      Dockerfile
+                      poetry.lock
 
             - name: Cache buildkit mounts
               uses: actions/cache@v4
@@ -129,8 +133,9 @@ jobs:
                       var-cache-apt
                       root-cache-pip
                       root-cache-pypoetry
-                  key: buildkit-mounts-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+                  key: buildkit-mounts-${{ runner.os }}-${{ hashFiles('**/Dockerfile', '**/poetry.lock') }}
                   restore-keys: |
+                      buildkit-mounts-${{ runner.os }}
                       buildkit-mounts-${{ runner.os }}
 
             - name: Inject var-cache-apt into docker
@@ -151,6 +156,9 @@ jobs:
                   cache-source: root-cache-pypoetry
                   cache-target: /root/.cache/pypoetry
 
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
             - name: Build CI image
               id: build-ci
               env:
@@ -170,8 +178,7 @@ jobs:
               id: docker_metadata
               uses: docker/metadata-action@v5
               with:
-                  images: |
-                      ${{ env.GHCR_IMAGE_NAME }}
+                  images: ${{ env.GHCR_IMAGE_NAME }}
 
             - name: Login to GHCR
               if: ${{ github.event_name != 'pull_request' }}
@@ -192,8 +199,7 @@ jobs:
                       ${{ env.GHCR_IMAGE_NAME }}:dev
                       ${{ env.GHCR_IMAGE_NAME }}:cache
                   cache-to: type=inline
-                  tags: |
-                      ${{ env.GHCR_IMAGE_NAME }}:dev
+                  tags: ${{ env.GHCR_IMAGE_NAME }}:dev
                   push: ${{ github.event_name != 'pull_request' }}
 
             - name: Build and push prod image
@@ -205,8 +211,7 @@ jobs:
                   cache-from: |
                       ${{ env.GHCR_IMAGE_NAME }}:dev
                       ${{ env.GHCR_IMAGE_NAME }}:cache
-                  cache-to: |
-                      type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:cache,mode=max
+                  cache-to: type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:cache,mode=max
                   tags: ${{ steps.docker_metadata.outputs.tags }}
                   labels: ${{ steps.docker_metadata.outputs.labels }}
                   annotations: ${{ steps.docker_metadata.outputs.annotations }}
