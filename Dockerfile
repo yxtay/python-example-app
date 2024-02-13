@@ -36,6 +36,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_COMPILE=0 \
+    PIP_NO_INPUT=1 \
     POETRY_NO_INTERACTION=1
 
 # set up python
