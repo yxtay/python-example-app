@@ -50,6 +50,8 @@ addopts = [
 fix = true
 src = [".", "src", "tests"]
 extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
 select = ["ALL"]
 ignore = [
     "D",      # pydocstyle
