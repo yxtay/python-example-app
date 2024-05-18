@@ -144,19 +144,19 @@ jobs:
                       buildkit-mounts-${{ runner.os }}
 
             - name: Inject var-cache-apt into docker
-              uses: reproducible-containers/buildkit-cache-dance@v2
+              uses: reproducible-containers/buildkit-cache-dance@v3
               with:
                   cache-source: var-cache-apt
                   cache-target: /var/cache/apt
 
             - name: Inject root-cache-pip into docker
-              uses: reproducible-containers/buildkit-cache-dance@v2
+              uses: reproducible-containers/buildkit-cache-dance@v3
               with:
                   cache-source: root-cache-pip
                   cache-target: /root/.cache/pip
 
             - name: Inject root-cache-pypoetry into docker
-              uses: reproducible-containers/buildkit-cache-dance@v2
+              uses: reproducible-containers/buildkit-cache-dance@v3
               with:
                   cache-source: root-cache-pypoetry
                   cache-target: /root/.cache/pypoetry
