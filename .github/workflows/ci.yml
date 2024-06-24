@@ -168,7 +168,7 @@ jobs:
               id: build-ci
               env:
                   ENVIRONMENT: ci
-              uses: docker/build-push-action@v5
+              uses: docker/build-push-action@v6
               with:
                   target: ${{ env.ENVIRONMENT }}
                   cache-from: |
@@ -197,7 +197,7 @@ jobs:
               if: ${{ github.event_name != 'pull_request' }}
               env:
                   ENVIRONMENT: dev
-              uses: docker/build-push-action@v5
+              uses: docker/build-push-action@v6
               with:
                   target: ${{ env.ENVIRONMENT }}
                   cache-from: |
@@ -211,7 +211,7 @@ jobs:
               if: ${{ github.event_name != 'pull_request' }}
               env:
                   ENVIRONMENT: prod
-              uses: docker/build-push-action@v5
+              uses: docker/build-push-action@v6
               with:
                   cache-from: |
                       ${{ env.GHCR_IMAGE_NAME }}:dev
