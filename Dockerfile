@@ -59,7 +59,7 @@ RUN --mount=type=cache,target=/root/.cache/pypoetry \
 
 EXPOSE 8000
 ARG ENVIRONMENT=dev
-ENV ENVIRONMENT ${ENVIRONMENT}
+ENV ENVIRONMENT=${ENVIRONMENT}
 CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf", "--reload"]
 
 ##
