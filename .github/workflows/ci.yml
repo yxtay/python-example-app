@@ -2,63 +2,16 @@ name: ci
 
 on:
   push:
-    branches:
-      - main
-    tags:
-      - "**"
+    branches: [main]
+    tags: ["**"]
   pull_request:
-    branches:
-      - main
+    branches: [main]
   merge_group:
-    branches:
-      - main
+    branches: [main]
+  workflow_call:
+  workflow_dispatch:
 
 jobs:
-  context:
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Dump GitHub script context
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
-        with:
-          script: console.log(context)
-
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo ${GITHUB_CONTEXT}
-
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo ${JOB_CONTEXT}
-
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo ${STEPS_CONTEXT}
-
-      - name: Dump runner context
-        env:
-          RUNNER_CONTEXT: ${{ toJson(runner) }}
-        run: echo ${RUNNER_CONTEXT}
-
-      - name: Dump strategy context
-        env:
-          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-        run: echo ${STRATEGY_CONTEXT}
-
-      - name: Dump matrix context
-        env:
-          MATRIX_CONTEXT: ${{ toJson(matrix) }}
-        run: echo ${MATRIX_CONTEXT}
-
-      - name: Dump environment variables
-        run: ${{ (runner.os == 'Windows') && 'gci env:' || 'env | sort' }}
-
   python:
     strategy:
       matrix:
@@ -129,23 +82,16 @@ jobs:
             buildkit-mounts-${{ runner.os }}
             buildkit-mounts-${{ runner.os }}
 
-      - name: Inject var-cache-apt into docker
+      - name: Inject cache into docker
         uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3
         with:
-          cache-source: var-cache-apt
-          cache-target: /var/cache/apt
-
-      - name: Inject root-cache-pip into docker
-        uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3
-        with:
-          cache-source: root-cache-pip
-          cache-target: /root/.cache/pip
-
-      - name: Inject root-cache-uv into docker
-        uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3
-        with:
-          cache-source: root-cache-uv
-          cache-target: /root/.cache/uv
+          cache-map: |
+            {
+              "var-cache-apt": "/var/cache/apt",
+              "var-lib-apt": "/var/lib/apt",
+              "root-cache-pip": "/root/.cache/pip",
+              "root-cache-uv": "/root/.cache/uv"
+            }
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3
