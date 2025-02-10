@@ -19,7 +19,6 @@ jobs:
       matrix:
         os: [ubuntu-latest]
 
-    name: context
     runs-on: ${{ matrix.os }}
     steps:
       - name: Dump GitHub script context
@@ -74,42 +73,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Poetry
-        run: |
-          pipx install poetry
-          poetry config virtualenvs.in-project true
+      - name: Set up UV
+        uses: astral-sh/setup-uv@v5
 
       - name: Set up Python
         id: setup-python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
-          cache: poetry
 
       - name: Set up environment
         if: ${{ runner.os != 'Windows' }}
         run: |
-          echo "POETRY_CACHE_DIR=$(poetry config cache-dir)" >> ${GITHUB_ENV}
-          echo "$(poetry env info --path)/bin" >> ${GITHUB_PATH}
+          echo "$(realpath .venv)/bin" >> ${GITHUB_PATH}
 
       - name: Set up environment (Windows)
         if: ${{ runner.os == 'Windows' }}
         run: |
-          "POETRY_CACHE_DIR=$(poetry config cache-dir)" | Out-File -FilePath ${env:GITHUB_ENV} -Append
-          "$(poetry env info --path)/Scripts" | Out-File -FilePath ${env:GITHUB_PATH} -Append
-
-      - name: Poetry cache
-        if: ${{ steps.setup-python.outputs.cache-hit != 'true' }}
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.POETRY_CACHE_DIR }}
-          key: pypoetry-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            pypoetry-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}
-            pypoetry-${{ runner.os }}
+          "$(Resolve-Path .venv)/Scripts" | Out-File -FilePath ${env:GITHUB_PATH} -Append
 
       - name: Install dependencies
-        run: poetry install --no-interaction
+        run: uv sync
 
       - name: Lint and test
         run: make lint test
@@ -129,7 +113,7 @@ jobs:
         with:
           sparse-checkout: |
             Dockerfile
-            poetry.lock
+            uv.lock
 
       - name: Cache buildkit mounts
         uses: actions/cache@v4
@@ -137,8 +121,8 @@ jobs:
           path: |
             var-cache-apt
             root-cache-pip
-            root-cache-pypoetry
-          key: buildkit-mounts-${{ runner.os }}-${{ hashFiles('**/Dockerfile', '**/poetry.lock') }}
+            root-cache-uv
+          key: buildkit-mounts-${{ runner.os }}-${{ hashFiles('**/Dockerfile', '**/*.lock') }}
           restore-keys: |
             buildkit-mounts-${{ runner.os }}
             buildkit-mounts-${{ runner.os }}
@@ -155,11 +139,11 @@ jobs:
           cache-source: root-cache-pip
           cache-target: /root/.cache/pip
 
-      - name: Inject root-cache-pypoetry into docker
+      - name: Inject root-cache-uv into docker
         uses: reproducible-containers/buildkit-cache-dance@v3
         with:
-          cache-source: root-cache-pypoetry
-          cache-target: /root/.cache/pypoetry
+          cache-source: root-cache-uv
+          cache-target: /root/.cache/uv
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
