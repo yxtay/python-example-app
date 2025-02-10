@@ -2,31 +2,27 @@
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry]
+[project]
 name = "example-app"
 version = "0.1.0"
 description = "Python example app incorporating best practices"
-authors = ["yxtay <wyextay@gmail.com>"]
+authors = [{ name = "yxtay", email = "wyextay@gmail.com" }]
 license = "MIT"
+requires-python = "~=3.11"
+dependencies = ["fastapi[all]", "gunicorn", "loguru", "sqlmodel", "typer"]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-fastapi = { extras = ["all"], version = "*" }
-gunicorn = "*"
-loguru = "*"
-sqlmodel = "*"
-typer = { extras = ["all"], version = "*" }
-
-[tool.poetry.group.dev.dependencies]
-mypy = "*"
-pre-commit = "*"
-pytest = "*"
-pytest-cov = "*"
-pytest-env = "*"
-pytest-mock = "*"
-pytest-xdist = "*"
-ruff = "*"
-commitizen = "*"
+[dependency-groups]
+dev = [
+  "commitizen",
+  "mypy",
+  "pre-commit",
+  "pytest",
+  "pytest-cov",
+  "pytest-env",
+  "pytest-mock",
+  "pytest-xdist",
+  "ruff",
+]
 
 [tool.isort]
 profile = "black"
