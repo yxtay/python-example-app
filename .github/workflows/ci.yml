@@ -85,11 +85,13 @@ jobs:
       - name: Set up environment
         if: ${{ runner.os != 'Windows' }}
         run: |
+          mkdir -p .venv
           echo "$(realpath .venv)/bin" >> ${GITHUB_PATH}
 
       - name: Set up environment (Windows)
         if: ${{ runner.os == 'Windows' }}
         run: |
+          New-Item -Type Directory -Force .venv
           "$(Resolve-Path .venv)/Scripts" | Out-File -FilePath ${env:GITHUB_PATH} -Append
 
       - name: Install dependencies

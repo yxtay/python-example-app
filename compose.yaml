@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   app_dev:
     image: ghcr.io/yxtay/python-example-app:dev
