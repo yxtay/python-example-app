@@ -1,223 +1,209 @@
 name: ci
 
 on:
-    push:
-        branches:
-            - main
-        tags:
-            - "**"
-    pull_request:
-        branches:
-            - main
-    merge_group:
-        branches:
-            - main
+  push:
+    branches:
+      - main
+    tags:
+      - "**"
+  pull_request:
+    branches:
+      - main
+  merge_group:
+    branches:
+      - main
 
 jobs:
-    context:
-        strategy:
-            matrix:
-                os: [ubuntu-latest]
+  context:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
 
-        name: context
-        runs-on: ${{ matrix.os }}
-        steps:
-            - name: Dump GitHub script context
-              uses: actions/github-script@v7
-              with:
-                  script: console.log(context)
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Dump GitHub script context
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        with:
+          script: console.log(context)
 
-            - name: Dump GitHub context
-              env:
-                  GITHUB_CONTEXT: ${{ toJson(github) }}
-              run: echo ${GITHUB_CONTEXT}
-
-            - name: Dump job context
-              env:
-                  JOB_CONTEXT: ${{ toJson(job) }}
-              run: echo ${JOB_CONTEXT}
-
-            - name: Dump steps context
-              env:
-                  STEPS_CONTEXT: ${{ toJson(steps) }}
-              run: echo ${STEPS_CONTEXT}
-
-            - name: Dump runner context
-              env:
-                  RUNNER_CONTEXT: ${{ toJson(runner) }}
-              run: echo ${RUNNER_CONTEXT}
-
-            - name: Dump strategy context
-              env:
-                  STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-              run: echo ${STRATEGY_CONTEXT}
-
-            - name: Dump matrix context
-              env:
-                  MATRIX_CONTEXT: ${{ toJson(matrix) }}
-              run: echo ${MATRIX_CONTEXT}
-
-            - name: Dump environment variables
-              run: ${{ (runner.os == 'Windows') && 'gci env:' || 'env | sort' }}
-
-    python:
-        strategy:
-            matrix:
-                os: [ubuntu-latest, macos-latest, windows-latest]
-                python: [3.12]
-
-        name: python
-        runs-on: ${{ matrix.os }}
+      - name: Dump GitHub context
         env:
-            ENVIRONMENT: ci
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo ${GITHUB_CONTEXT}
 
-            - name: Set up Poetry
-              run: |
-                  pipx install poetry
-                  poetry config virtualenvs.in-project true
-
-            - name: Set up Python
-              id: setup-python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ matrix.python }}
-                  cache: poetry
-
-            - name: Set up environment
-              if: ${{ runner.os != 'Windows' }}
-              run: |
-                  echo "POETRY_CACHE_DIR=$(poetry config cache-dir)" >> ${GITHUB_ENV}
-                  echo "$(poetry env info --path)/bin" >> ${GITHUB_PATH}
-
-            - name: Set up environment (Windows)
-              if: ${{ runner.os == 'Windows' }}
-              run: |
-                  "POETRY_CACHE_DIR=$(poetry config cache-dir)" | Out-File -FilePath ${env:GITHUB_ENV} -Append
-                  "$(poetry env info --path)/Scripts" | Out-File -FilePath ${env:GITHUB_PATH} -Append
-
-            - name: Poetry cache
-              if: ${{ steps.setup-python.outputs.cache-hit != 'true' }}
-              uses: actions/cache@v4
-              with:
-                  path: ${{ env.POETRY_CACHE_DIR }}
-                  key: pypoetry-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-                  restore-keys: |
-                      pypoetry-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}
-                      pypoetry-${{ runner.os }}
-
-            - name: Install dependencies
-              run: poetry install --no-interaction
-
-            - name: Lint and test
-              run: make lint test
-
-    docker:
-        name: docker
-        permissions:
-            contents: read
-            packages: write
-        runs-on: ubuntu-latest
+      - name: Dump job context
         env:
-            GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo ${JOB_CONTEXT}
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-              with:
-                  sparse-checkout: |
-                      Dockerfile
-                      poetry.lock
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo ${STEPS_CONTEXT}
 
-            - name: Cache buildkit mounts
-              uses: actions/cache@v4
-              with:
-                  path: |
-                      var-cache-apt
-                      root-cache-pip
-                      root-cache-pypoetry
-                  key: buildkit-mounts-${{ runner.os }}-${{ hashFiles('**/Dockerfile', '**/poetry.lock') }}
-                  restore-keys: |
-                      buildkit-mounts-${{ runner.os }}
-                      buildkit-mounts-${{ runner.os }}
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo ${RUNNER_CONTEXT}
 
-            - name: Inject var-cache-apt into docker
-              uses: reproducible-containers/buildkit-cache-dance@v3
-              with:
-                  cache-source: var-cache-apt
-                  cache-target: /var/cache/apt
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo ${STRATEGY_CONTEXT}
 
-            - name: Inject root-cache-pip into docker
-              uses: reproducible-containers/buildkit-cache-dance@v3
-              with:
-                  cache-source: root-cache-pip
-                  cache-target: /root/.cache/pip
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo ${MATRIX_CONTEXT}
 
-            - name: Inject root-cache-pypoetry into docker
-              uses: reproducible-containers/buildkit-cache-dance@v3
-              with:
-                  cache-source: root-cache-pypoetry
-                  cache-target: /root/.cache/pypoetry
+      - name: Dump environment variables
+        run: ${{ (runner.os == 'Windows') && 'gci env:' || 'env | sort' }}
 
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v3
+  python:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: [3.12]
 
-            - name: Build CI image
-              id: build-ci
-              env:
-                  ENVIRONMENT: ci
-              uses: docker/build-push-action@v6
-              with:
-                  target: ${{ env.ENVIRONMENT }}
-                  cache-from: |
-                      ${{ env.GHCR_IMAGE_NAME }}:dev
-                      ${{ env.GHCR_IMAGE_NAME }}:cache
-                  load: true
+    name: python
+    runs-on: ${{ matrix.os }}
+    env:
+      ENVIRONMENT: ci
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-            - name: Run CI image
-              run: docker run --rm ${{ steps.build-ci.outputs.imageid }}
+      - name: Set up UV
+        uses: astral-sh/setup-uv@4db96194c378173c656ce18a155ffc14a9fc4355 # v5
 
-            - name: Docker metadata
-              id: docker_metadata
-              uses: docker/metadata-action@v5
-              with:
-                  images: ${{ env.GHCR_IMAGE_NAME }}
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
+        with:
+          python-version: ${{ matrix.python }}
 
-            - name: Login to GHCR
-              if: ${{ github.event_name != 'pull_request' }}
-              uses: docker/login-action@v3
-              with:
-                  registry: ghcr.io
-                  username: ${{ github.repository_owner }}
-                  password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up environment
+        if: ${{ runner.os != 'Windows' }}
+        run: |
+          mkdir -p .venv
+          echo "$(realpath .venv)/bin" >> ${GITHUB_PATH}
 
-            - name: Build and push dev image
-              if: ${{ github.event_name != 'pull_request' }}
-              env:
-                  ENVIRONMENT: dev
-              uses: docker/build-push-action@v6
-              with:
-                  target: ${{ env.ENVIRONMENT }}
-                  cache-from: |
-                      ${{ env.GHCR_IMAGE_NAME }}:dev
-                      ${{ env.GHCR_IMAGE_NAME }}:cache
-                  cache-to: type=inline
-                  tags: ${{ env.GHCR_IMAGE_NAME }}:dev
-                  push: ${{ github.event_name != 'pull_request' }}
+      - name: Set up environment (Windows)
+        if: ${{ runner.os == 'Windows' }}
+        run: |
+          New-Item -Type Directory -Force .venv
+          "$(Resolve-Path .venv)/Scripts" | Out-File -FilePath ${env:GITHUB_PATH} -Append
 
-            - name: Build and push prod image
-              if: ${{ github.event_name != 'pull_request' }}
-              env:
-                  ENVIRONMENT: prod
-              uses: docker/build-push-action@v6
-              with:
-                  cache-from: |
-                      ${{ env.GHCR_IMAGE_NAME }}:dev
-                      ${{ env.GHCR_IMAGE_NAME }}:cache
-                  cache-to: type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:cache,mode=max
-                  tags: ${{ steps.docker_metadata.outputs.tags }}
-                  labels: ${{ steps.docker_metadata.outputs.labels }}
-                  annotations: ${{ steps.docker_metadata.outputs.annotations }}
-                  push: ${{ github.event_name != 'pull_request' }}
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Lint and test
+        run: make lint test
+
+  docker:
+    name: docker
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    env:
+      GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          sparse-checkout: |
+            Dockerfile
+            uv.lock
+
+      - name: Cache buildkit mounts
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+        with:
+          path: |
+            var-cache-apt
+            root-cache-pip
+            root-cache-uv
+          key: buildkit-mounts-${{ runner.os }}-${{ hashFiles('**/Dockerfile', '**/*.lock') }}
+          restore-keys: |
+            buildkit-mounts-${{ runner.os }}
+            buildkit-mounts-${{ runner.os }}
+
+      - name: Inject var-cache-apt into docker
+        uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3
+        with:
+          cache-source: var-cache-apt
+          cache-target: /var/cache/apt
+
+      - name: Inject root-cache-pip into docker
+        uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3
+        with:
+          cache-source: root-cache-pip
+          cache-target: /root/.cache/pip
+
+      - name: Inject root-cache-uv into docker
+        uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3
+        with:
+          cache-source: root-cache-uv
+          cache-target: /root/.cache/uv
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3
+
+      - name: Build CI image
+        id: build-ci
+        env:
+          ENVIRONMENT: ci
+        uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6
+        with:
+          target: ${{ env.ENVIRONMENT }}
+          cache-from: |
+            ${{ env.GHCR_IMAGE_NAME }}:dev
+            ${{ env.GHCR_IMAGE_NAME }}:cache
+          load: true
+
+      - name: Run CI image
+        run: docker run --rm ${{ steps.build-ci.outputs.imageid }}
+
+      - name: Docker metadata
+        id: docker_metadata
+        uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5
+        with:
+          images: ${{ env.GHCR_IMAGE_NAME }}
+
+      - name: Login to GHCR
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push dev image
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          ENVIRONMENT: dev
+        uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6
+        with:
+          target: ${{ env.ENVIRONMENT }}
+          cache-from: |
+            ${{ env.GHCR_IMAGE_NAME }}:dev
+            ${{ env.GHCR_IMAGE_NAME }}:cache
+          cache-to: type=inline
+          tags: ${{ env.GHCR_IMAGE_NAME }}:dev
+          push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Build and push prod image
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          ENVIRONMENT: prod
+        uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6
+        with:
+          cache-from: |
+            ${{ env.GHCR_IMAGE_NAME }}:dev
+            ${{ env.GHCR_IMAGE_NAME }}:cache
+          cache-to: type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:cache,mode=max
+          tags: ${{ steps.docker_metadata.outputs.tags }}
+          labels: ${{ steps.docker_metadata.outputs.labels }}
+          annotations: ${{ steps.docker_metadata.outputs.annotations }}
+          push: ${{ github.event_name != 'pull_request' }}

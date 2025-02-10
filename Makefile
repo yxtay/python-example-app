@@ -27,29 +27,29 @@ help:  ## print help message
 
 .PHONY: deps-install-python
 deps-install-python:
-	poetry install
-	python -m pip list
+	uv sync
+	uv pip list
 
 .PHONY: deps-install
 deps-install: deps-install-python  ## install dependencies
-	python -m pre_commit install --install-hooks
+	uvx pre-commit install --install-hooks
 
 .PHONY: deps-update
 deps-update:
-	poetry update
-	python -m pre_commit autoupdate
+	uv lock --upgrade
+	uvx pre-commit-update
 
 ## checks
 
 .PHONY: format
 format:
-	python -m ruff check --fix .
-	python -m ruff format .
+	uvx ruff check --fix .
+	uvx ruff format .
 
 .PHONY: lint
 lint:
-	python -m ruff check .
-	python -m ruff format .
+	uvx ruff check .
+	uvx ruff format .
 	python -m mypy $(SOURCE_DIR)
 
 .PHONY: test
@@ -75,7 +75,7 @@ run:  ## run main python app
 dc-build:  ## build app image
 	docker compose build app_dev app_ci app
 
-.PHONY: dc-test
+.PHONY: dc-ci
 dc-ci:
 	docker compose run --build --rm app_ci
 
