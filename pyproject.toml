@@ -2,31 +2,27 @@
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry]
+[project]
 name = "example-app"
 version = "0.1.0"
 description = "Python example app incorporating best practices"
-authors = ["yxtay <wyextay@gmail.com>"]
+authors = [{ name = "yxtay", email = "wyextay@gmail.com" }]
 license = "MIT"
+requires-python = "~=3.11"
+dependencies = ["fastapi[all]", "gunicorn", "loguru", "sqlmodel", "typer"]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-fastapi = { extras = ["all"], version = "*" }
-gunicorn = "*"
-loguru = "*"
-sqlmodel = "*"
-typer = { extras = ["all"], version = "*" }
-
-[tool.poetry.group.dev.dependencies]
-mypy = "*"
-pre-commit = "*"
-pytest = "*"
-pytest-cov = "*"
-pytest-env = "*"
-pytest-mock = "*"
-pytest-xdist = "*"
-ruff = "*"
-commitizen = "*"
+[dependency-groups]
+dev = [
+  "commitizen",
+  "mypy",
+  "pre-commit",
+  "pytest",
+  "pytest-cov",
+  "pytest-env",
+  "pytest-mock",
+  "pytest-xdist",
+  "ruff",
+]
 
 [tool.isort]
 profile = "black"
@@ -39,11 +35,11 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 addopts = [
-    "-ra",
-    "-v",
-    "--strict-markers",
-    "--import-mode=importlib",
-    "--cov=src",
+  "-ra",
+  "-v",
+  "--strict-markers",
+  "--import-mode=importlib",
+  "--cov=src",
 ]
 
 [tool.ruff]
@@ -54,10 +50,10 @@ extend-include = ["*.ipynb"]
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "D",      # pydocstyle
-    "E501",   # line-too-long
-    "COM812", # missing-trailing-comma # conflicts with ruff formatter
-    "ISC001", # single-line-implicit-string-concatenation # conflicts with ruff formatter
+  "D",      # pydocstyle
+  "E501",   # line-too-long
+  "COM812", # missing-trailing-comma # conflicts with ruff formatter
+  "ISC001", # single-line-implicit-string-concatenation # conflicts with ruff formatter
 ]
 
 [tool.ruff.lint.pydocstyle]
@@ -65,5 +61,5 @@ convention = "pep257"
 
 [tool.ruff.lint.per-file-ignores]
 "**/tests/**" = [
-    "S101", # assert
+  "S101", # assert
 ]

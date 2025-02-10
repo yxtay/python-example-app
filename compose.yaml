@@ -1,47 +1,46 @@
-version: "3.9"
 services:
-    app_dev:
-        image: ghcr.io/yxtay/python-example-app:dev
-        build:
-            args:
-                ENVIRONMENT: ${ENVIRONMENT:-dev}
-            cache_from:
-                - ghcr.io/yxtay/python-example-app:dev
-            cache_to:
-                - type=inline
-            target: dev
-        ports:
-            - "8000:8000"
-        volumes:
-            - .:/opt/app
-        profiles:
-            - dev
-    app_ci:
-        image: ghcr.io/yxtay/python-example-app:ci
-        build:
-            args:
-                ENVIRONMENT: ${ENVIRONMENT:-dev}
-            cache_from:
-                - ghcr.io/yxtay/python-example-app:dev
-                - ghcr.io/yxtay/python-example-app:ci
-            cache_to:
-                - type=inline
-            target: ci
-        ports:
-            - "8000:8000"
-        profiles:
-            - ci
-    app:
-        image: ghcr.io/yxtay/python-example-app:main
-        build:
-            args:
-                ENVIRONMENT: ${ENVIRONMENT:-dev}
-            cache_from:
-                - ghcr.io/yxtay/python-example-app:dev
-                - ghcr.io/yxtay/python-example-app:ci
-                - ghcr.io/yxtay/python-example-app:main
-            target: prod
-        ports:
-            - "8000:8000"
-        profiles:
-            - prod
+  app_dev:
+    image: ghcr.io/yxtay/python-example-app:dev
+    build:
+      args:
+        ENVIRONMENT: ${ENVIRONMENT:-dev}
+      cache_from:
+        - ghcr.io/yxtay/python-example-app:dev
+      cache_to:
+        - type=inline
+      target: dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/opt/app
+    profiles:
+      - dev
+  app_ci:
+    image: ghcr.io/yxtay/python-example-app:ci
+    build:
+      args:
+        ENVIRONMENT: ${ENVIRONMENT:-dev}
+      cache_from:
+        - ghcr.io/yxtay/python-example-app:dev
+        - ghcr.io/yxtay/python-example-app:ci
+      cache_to:
+        - type=inline
+      target: ci
+    ports:
+      - "8000:8000"
+    profiles:
+      - ci
+  app:
+    image: ghcr.io/yxtay/python-example-app:main
+    build:
+      args:
+        ENVIRONMENT: ${ENVIRONMENT:-dev}
+      cache_from:
+        - ghcr.io/yxtay/python-example-app:dev
+        - ghcr.io/yxtay/python-example-app:ci
+        - ghcr.io/yxtay/python-example-app:main
+      target: prod
+    ports:
+      - "8000:8000"
+    profiles:
+      - prod
