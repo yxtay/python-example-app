@@ -32,12 +32,12 @@ deps-install-python:
 
 .PHONY: deps-install
 deps-install: deps-install-python  ## install dependencies
-	uvx pre_commit install --install-hooks
+	uvx pre-commit install --install-hooks
 
 .PHONY: deps-update
 deps-update:
 	uv lock --update
-	uvx pre_commit autoupdate
+	uvx pre-commit autoupdate
 
 ## checks
 
