@@ -13,15 +13,12 @@ dependencies = ["fastapi[all]", "gunicorn", "loguru", "sqlmodel", "typer"]
 
 [dependency-groups]
 dev = [
-  "commitizen",
   "mypy",
-  "pre-commit",
   "pytest",
   "pytest-cov",
   "pytest-env",
   "pytest-mock",
   "pytest-xdist",
-  "ruff",
 ]
 
 [tool.isort]
