@@ -10,13 +10,13 @@ ARG UID=1000
 RUN useradd --no-create-home --shell /bin/false --uid ${UID} ${USER}
 
 # set up environment
-ARG VIRTUAL_ENV=/work/venv
+ARG APP_HOME=/work/app
+ARG VIRTUAL_ENV=${APP_HOME}/.venv
 ENV PYTHONFAULTHANDLER=1 \
     PYTHONUNBUFFERED=1 \
     VIRTUAL_ENV=${VIRTUAL_ENV} \
     PATH=${VIRTUAL_ENV}/bin:${PATH}
 
-ARG APP_HOME=/work/app
 WORKDIR ${APP_HOME}
 
 ##
