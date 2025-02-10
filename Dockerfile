@@ -25,13 +25,20 @@ WORKDIR ${APP_HOME}
 FROM base AS dev
 
 ARG DEBIAN_FRONTEND=noninteractive
+COPY <<-EOF /etc/apt/apt.conf.d/99-disable-recommends
+APT::Install-Recommends "false";
+APT::Install-Suggests "false";
+APT::AutoRemove::RecommendsImportant "false";
+APT::AutoRemove::SuggestsImportant "false";
+EOF
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
+    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache && \
     apt-get update && \
-    apt-get install --no-install-recommends -y \
+    apt-get install --yes \
         build-essential \
-        curl \
-    && rm -rf /var/lib/apt/lists/*
+        curl
 
 ARG PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=0 \
