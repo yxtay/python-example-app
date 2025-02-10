@@ -72,7 +72,6 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     chown -R ${USER}:${USER} ${VIRTUAL_ENV} && \
     uv pip list
 
-USER ${USER}
 COPY --chown=${USER}:${USER} tests tests
 COPY --chown=${USER}:${USER} Makefile Makefile
 
