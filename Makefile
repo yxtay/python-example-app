@@ -36,8 +36,8 @@ deps-install: deps-install-python  ## install dependencies
 
 .PHONY: deps-update
 deps-update:
-	uv lock --update
-	uvx pre-commit autoupdate
+	uv lock --upgrade
+	uvx pre-commit-update
 
 ## checks
 
@@ -75,7 +75,7 @@ run:  ## run main python app
 dc-build:  ## build app image
 	docker compose build app_dev app_ci app
 
-.PHONY: dc-test
+.PHONY: dc-ci
 dc-ci:
 	docker compose run --build --rm app_ci
 
