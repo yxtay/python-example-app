@@ -14,11 +14,11 @@ services:
     volumes:
       - .:/opt/app
     healthcheck:
-      test: [CMD, curl, -f, "http://localhost/"]
+      test: [CMD, curl, -f, 'http://localhost/']
     cap_drop:
       - all
     security_opt:
-      - apparmor:unconfined
+      - no-new-privileges:true
     profiles:
       - dev
   app_ci:
@@ -35,11 +35,11 @@ services:
     ports:
       - 127.0.0.1:8000:8000
     healthcheck:
-      test: [CMD, curl, -f, "http://localhost/"]
+      test: [CMD, curl, -f, 'http://localhost/']
     cap_drop:
       - all
     security_opt:
-      - apparmor:unconfined
+      - no-new-privileges:true
     profiles:
       - ci
   app:
@@ -55,10 +55,10 @@ services:
     ports:
       - 127.0.0.1:8000:8000
     healthcheck:
-      test: [CMD, curl, -f, "http://localhost/"]
+      test: [CMD, curl, -f, 'http://localhost/']
     cap_drop:
       - all
     security_opt:
-      - apparmor:unconfined
+      - no-new-privileges:true
     profiles:
       - prod
