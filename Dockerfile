@@ -38,8 +38,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache && \
     apt-get update && \
     apt-get install --yes --no-install-recommends \
-        build-essential=12.10ubuntu1 \
-        curl=8.9.1-2ubuntu2.2
+        build-essential=12.10 \
+        curl=8.9.1-2
 
 ARG PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=0 \
