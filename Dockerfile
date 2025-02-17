@@ -31,14 +31,15 @@ APT::Install-Suggests "false";
 APT::AutoRemove::RecommendsImportant "false";
 APT::AutoRemove::SuggestsImportant "false";
 EOF
+
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
     echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache && \
     apt-get update && \
     apt-get install --yes --no-install-recommends \
-        build-essential \
-        curl
+        build-essential=12.10ubuntu1 \
+        curl=8.9.1-2ubuntu2.2
 
 ARG PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=0 \
@@ -49,7 +50,7 @@ ARG PIP_DISABLE_PIP_VERSION_CHECK=1 \
 
 # set up python
 COPY --from=ghcr.io/astral-sh/uv:latest@sha256:63b7453435641145dc3afab79a6bc2b6df6f77107bec2d0df39fd27b1c791c0a /uv /uvx /bin/
-COPY --chown=${USER}:${USER} pyproject.toml uv.lock ./
+COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv venv --seed ${VIRTUAL_ENV} && \
     uv sync --frozen --no-default-groups --no-install-project && \
@@ -58,7 +59,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip list
 
 # set up project
-COPY --chown=${USER}:${USER} src src
+COPY src src
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-default-groups
 
@@ -79,8 +80,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     chown -R ${USER}:${USER} ${VIRTUAL_ENV} && \
     uv pip list
 
-COPY --chown=${USER}:${USER} tests tests
-COPY --chown=${USER}:${USER} Makefile Makefile
+COPY tests tests
+COPY Makefile Makefile
 
 CMD ["make", "lint", "test"]
 
@@ -91,8 +92,8 @@ FROM base AS prod
 
 # set up project
 USER ${USER}
-COPY --from=dev --chown=${USER}:${USER} ${VIRTUAL_ENV} ${VIRTUAL_ENV}
-COPY --from=dev --chown=${USER}:${USER} ${APP_HOME} ${APP_HOME}
+COPY --from=dev ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+COPY --from=dev ${APP_HOME} ${APP_HOME}
 
 EXPOSE 8000
 ARG ENVIRONMENT=prod

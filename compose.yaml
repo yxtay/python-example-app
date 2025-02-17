@@ -9,8 +9,10 @@ services:
       cache_to:
         - type=inline
       target: dev
+    healthcheck:
+      test: curl -f http://localhost/ || exit 1
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     volumes:
       - .:/opt/app
     profiles:
@@ -26,8 +28,10 @@ services:
       cache_to:
         - type=inline
       target: ci
+    healthcheck:
+      test: curl -f http://localhost/ || exit 1
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     profiles:
       - ci
   app:
@@ -40,7 +44,9 @@ services:
         - ghcr.io/yxtay/python-example-app:ci
         - ghcr.io/yxtay/python-example-app:main
       target: prod
+    healthcheck:
+      test: curl -f http://localhost/ || exit 1
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     profiles:
       - prod
