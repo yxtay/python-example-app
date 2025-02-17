@@ -82,7 +82,7 @@ COPY tests tests
 COPY Makefile Makefile
 
 USER ${USER}
-RUN mkdir -p ${HOME}/.cache
+RUN mkdir -p "${HOME}/.cache"
 CMD ["make", "lint", "test"]
 
 ##
