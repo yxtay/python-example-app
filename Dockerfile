@@ -7,7 +7,7 @@ LABEL maintainer="wyextay@gmail.com"
 # set up user
 ARG USER=user
 ARG UID=1000
-RUN useradd --no-create-home --shell /bin/false --uid ${UID} ${USER}
+RUN useradd --shell /bin/false --uid ${UID} ${USER}
 
 # set up environment
 ARG APP_HOME=/work/app
