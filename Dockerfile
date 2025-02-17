@@ -36,7 +36,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
     echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache && \
     apt-get update && \
-    apt-get install --yes \
+    apt-get install --yes --no-install-recommends \
         build-essential \
         curl
 
@@ -98,3 +98,5 @@ EXPOSE 8000
 ARG ENVIRONMENT=prod
 ENV ENVIRONMENT=${ENVIRONMENT}
 CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf"]
+
+HEALTHCHECK CMD curl -f http://localhost/ || exit 1
