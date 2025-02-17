@@ -39,7 +39,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     apt-get install --yes --no-install-recommends \
         build-essential=12.9 \
-        curl=7.88.1-10+deb12u8
+        curl=7.88.1-10+deb12u8 \
+    && rm -rf /var/lib/apt/lists/*
 
 ARG PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=0 \
@@ -52,10 +53,8 @@ ARG PIP_DISABLE_PIP_VERSION_CHECK=1 \
 COPY --from=ghcr.io/astral-sh/uv:latest@sha256:63b7453435641145dc3afab79a6bc2b6df6f77107bec2d0df39fd27b1c791c0a /uv /uvx /bin/
 COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv venv --seed ${VIRTUAL_ENV} && \
+    uv venv --seed "${VIRTUAL_ENV}" && \
     uv sync --frozen --no-default-groups --no-install-project && \
-    chown -R ${USER}:${USER} ${VIRTUAL_ENV} && \
-    chown -R ${USER}:${USER} ${APP_HOME} && \
     uv pip list
 
 # set up project
@@ -77,12 +76,12 @@ FROM dev AS ci
 USER root
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen && \
-    chown -R ${USER}:${USER} ${VIRTUAL_ENV} && \
     uv pip list
 
 COPY tests tests
 COPY Makefile Makefile
 
+USER ${USER}
 CMD ["make", "lint", "test"]
 
 ##
