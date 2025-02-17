@@ -38,8 +38,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache && \
     apt-get update && \
     apt-get install --yes --no-install-recommends \
-        build-essential=12.10 \
-        curl=8.9.1-2
+        build-essential=12.9 \
+        curl=7.88.1-10+deb12u8
 
 ARG PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=0 \
@@ -100,4 +100,4 @@ ARG ENVIRONMENT=prod
 ENV ENVIRONMENT=${ENVIRONMENT}
 CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf"]
 
-HEALTHCHECK CMD curl -f http://localhost/ || exit 1
+HEALTHCHECK CMD ["curl", "-f", "http://localhost/"]
