@@ -10,9 +10,13 @@ services:
         - type=inline
       target: dev
     ports:
-      - "8000:8000"
+      - 8000:8000
     volumes:
       - .:/opt/app
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true
     profiles:
       - dev
   app_ci:
@@ -27,7 +31,11 @@ services:
         - type=inline
       target: ci
     ports:
-      - "8000:8000"
+      - 8000:8000
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true
     profiles:
       - ci
   app:
@@ -41,6 +49,10 @@ services:
         - ghcr.io/yxtay/python-example-app:main
       target: prod
     ports:
-      - "8000:8000"
+      - 8000:8000
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true
     profiles:
       - prod
