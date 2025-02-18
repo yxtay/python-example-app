@@ -10,11 +10,9 @@ services:
         - type=inline
       target: dev
     ports:
-      - 127.0.0.1:8000:8000
+      - 8000:8000
     volumes:
       - .:/opt/app
-    healthcheck:
-      test: [CMD, curl, -f, "http://localhost/"]
     cap_drop:
       - all
     security_opt:
@@ -33,9 +31,7 @@ services:
         - type=inline
       target: ci
     ports:
-      - 127.0.0.1:8000:8000
-    healthcheck:
-      test: [CMD, curl, -f, "http://localhost/"]
+      - 8000:8000
     cap_drop:
       - all
     security_opt:
@@ -53,9 +49,7 @@ services:
         - ghcr.io/yxtay/python-example-app:main
       target: prod
     ports:
-      - 127.0.0.1:8000:8000
-    healthcheck:
-      test: [CMD, curl, -f, "http://localhost/"]
+      - 8000:8000
     cap_drop:
       - all
     security_opt:
