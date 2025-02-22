@@ -1,10 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:best-practices", "group:allNonMajor"],
+  "extends": [
+    "config:best-practices",
+    "security:openssf-scorecard",
+    "group:allNonMajor",
+    "group:allDigest",
+    ":automergeMinor",
+    ":automergeDigest"
+  ],
   "packageRules": [
     {
-      "automerge": true,
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"]
+      "automerge": false,
+      "groupName": "python",
+      "matchPackageNames": ["python"],
+      "matchUpdateTypes": ["minor"]
     }
   ]
 }
