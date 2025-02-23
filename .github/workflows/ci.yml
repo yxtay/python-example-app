@@ -51,7 +51,9 @@ jobs:
           New-Item -Type Directory -Force .venv
           "$(Resolve-Path .venv)/Scripts" | Out-File -FilePath "${env:GITHUB_PATH}" -Append
 
-      - run: uv sync --locked --frozen
+      - run: |
+          uv lock --check
+          uv sync --frozen
 
       - run: make lint test
 
