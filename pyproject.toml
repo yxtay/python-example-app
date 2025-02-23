@@ -9,16 +9,22 @@ description = "Python example app incorporating best practices"
 authors = [{ name = "yxtay", email = "wyextay@gmail.com" }]
 license = "MIT"
 requires-python = "~=3.11"
-dependencies = ["fastapi[all]", "gunicorn", "loguru", "sqlmodel", "typer"]
+dependencies = [
+  "fastapi[all]>=0.115",
+  "gunicorn>=23.0",
+  "loguru>=0.7",
+  "sqlmodel>=0.0",
+  "typer>=0.15",
+]
 
 [dependency-groups]
 dev = [
-  "mypy",
-  "pytest",
-  "pytest-cov",
-  "pytest-env",
-  "pytest-mock",
-  "pytest-xdist",
+  "mypy~=1.15",
+  "pytest~=8.3",
+  "pytest-cov~=6.0",
+  "pytest-env~=1.1",
+  "pytest-mock~=3.14",
+  "pytest-xdist~=3.6",
 ]
 
 [tool.isort]
