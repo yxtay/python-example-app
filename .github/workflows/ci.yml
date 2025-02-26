@@ -95,12 +95,12 @@ jobs:
               "root-cache-uv": "/root/.cache/uv"
             }
 
-      - uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3
+      - uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
 
       - id: build-ci
         env:
           ENVIRONMENT: ci
-        uses: docker/build-push-action@0adf9959216b96bec444f325f1e493d4aa344497 # v6
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6
         with:
           target: ${{ env.ENVIRONMENT }}
           cache-from: |
@@ -111,7 +111,7 @@ jobs:
       - run: docker run --rm ${{ steps.build-ci.outputs.imageid }}
 
       - id: docker_metadata
-        uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5
         with:
           images: ${{ env.GHCR_IMAGE_NAME }}
 
@@ -125,7 +125,7 @@ jobs:
       - if: ${{ github.event_name != 'pull_request' }}
         env:
           ENVIRONMENT: dev
-        uses: docker/build-push-action@0adf9959216b96bec444f325f1e493d4aa344497 # v6
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6
         with:
           target: ${{ env.ENVIRONMENT }}
           cache-from: |
@@ -136,7 +136,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
 
       - if: ${{ github.event_name != 'pull_request' }}
-        uses: docker/build-push-action@0adf9959216b96bec444f325f1e493d4aa344497 # v6
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6
         with:
           cache-from: |
             ${{ env.GHCR_IMAGE_NAME }}:dev
