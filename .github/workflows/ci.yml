@@ -78,11 +78,10 @@ jobs:
         with:
           path: |
             var-cache-apt
-            root-cache-pip
+            var-lib-apt
             root-cache-uv
           key: buildkit-mounts-${{ runner.os }}-${{ hashFiles('**/Dockerfile', '**/*.lock') }}
           restore-keys: |
-            buildkit-mounts-${{ runner.os }}
             buildkit-mounts-${{ runner.os }}
 
       - uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3
@@ -91,15 +90,12 @@ jobs:
             {
               "var-cache-apt": "/var/cache/apt",
               "var-lib-apt": "/var/lib/apt",
-              "root-cache-pip": "/root/.cache/pip",
               "root-cache-uv": "/root/.cache/uv"
             }
 
       - uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
 
       - id: build-ci
-        env:
-          ENVIRONMENT: ci
         uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6
         with:
           target: ${{ env.ENVIRONMENT }}
@@ -107,6 +103,8 @@ jobs:
             ${{ env.GHCR_IMAGE_NAME }}:dev
             ${{ env.GHCR_IMAGE_NAME }}:cache
           load: true
+        env:
+          ENVIRONMENT: ci
 
       - run: docker run --rm ${{ steps.build-ci.outputs.imageid }}
 
@@ -115,16 +113,14 @@ jobs:
         with:
           images: ${{ env.GHCR_IMAGE_NAME }}
 
-      - if: ${{ github.event_name != 'pull_request' }}
+      - if: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - if: ${{ github.event_name != 'pull_request' }}
-        env:
-          ENVIRONMENT: dev
+      - if: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
         uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6
         with:
           target: ${{ env.ENVIRONMENT }}
@@ -133,9 +129,11 @@ jobs:
             ${{ env.GHCR_IMAGE_NAME }}:cache
           cache-to: type=inline
           tags: ${{ env.GHCR_IMAGE_NAME }}:dev
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
+        env:
+          ENVIRONMENT: dev
 
-      - if: ${{ github.event_name != 'pull_request' }}
+      - if: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
         uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6
         with:
           cache-from: |
@@ -145,6 +143,6 @@ jobs:
           tags: ${{ steps.docker_metadata.outputs.tags }}
           labels: ${{ steps.docker_metadata.outputs.labels }}
           annotations: ${{ steps.docker_metadata.outputs.annotations }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
         env:
           ENVIRONMENT: prod
