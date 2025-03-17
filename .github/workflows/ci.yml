@@ -106,7 +106,9 @@ jobs:
         env:
           ENVIRONMENT: ci
 
-      - run: docker run --rm ${{ steps.build-ci.outputs.imageid }}
+      - run: docker run --rm "${IMAGE_ID}"
+        env:
+          IMAGE_ID: ${{ steps.build-ci.outputs.imageid }}
 
       - id: docker_metadata
         uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5
