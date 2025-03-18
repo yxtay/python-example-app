@@ -37,7 +37,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     apt-get install --yes --no-install-recommends \
         build-essential=12.9 \
-        curl=7.88.1-10+deb12u8 \
+        curl=7.88.1-10+deb12u12 \
     && rm -rf /var/lib/apt/lists/*
 
 ARG PYTHONDONTWRITEBYTECODE=1
