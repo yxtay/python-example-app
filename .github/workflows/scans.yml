@@ -110,21 +110,15 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - id: changed-files
-        uses: step-security/changed-files@3dbe17c78367e7d60f00d78ae6781a35be47b4a1 #v45
-        with:
-          separator: ","
-
-      - if: ${{ steps.changed-files.outputs.all_changed_files != '' }}
-        uses: checkmarx/kics-github-action@5373b38b35d09a400790b9e560189064d185391f # v2
+      - uses: checkmarx/kics-github-action@5373b38b35d09a400790b9e560189064d185391f # v2
         with:
           enable_annotations: true
           enable_comments: true
           enable_jobs_summary: true
           comments_with_queries: true
-          path: ${{ steps.changed-files.outputs.all_changed_files }}
+          path: .
           fail_on: high
-          output_formats: json,sarif
+          output_formats: sarif
           bom: true
 
       - if: ${{ success() || failure() }}
