@@ -118,7 +118,7 @@ jobs:
           comments_with_queries: true
           path: .
           fail_on: high
-          output_formats: json,sarif
+          output_formats: sarif
           bom: true
 
       - if: ${{ success() || failure() }}
