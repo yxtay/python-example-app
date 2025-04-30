@@ -41,14 +41,16 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     && rm -rf /var/lib/apt/lists/*
 
 ARG PYTHONDONTWRITEBYTECODE=1
-ARG UV_NO_CACHE=1
+ENV UV_FROZEN=1 \
+    UV_NO_CACHE=1 \
+    UV_NO_SYNC=1
 
 # set up python
 COPY --from=ghcr.io/astral-sh/uv:latest@sha256:bc574e793452103839d769a20249cfe4c8b6e40e5c29fda34ceee26120eabe3b /uv /uvx /bin/
 COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv venv --seed "${VIRTUAL_ENV}" && \
-    uv sync --frozen --no-default-groups --no-install-project && \
+    uv sync --no-default-groups --no-install-project && \
     chown -R "${USER}:${USER}" "${VIRTUAL_ENV}" && \
     chown -R "${USER}:${USER}" "${APP_HOME}" && \
     uv pip list
@@ -56,7 +58,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # set up project
 COPY src src
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-default-groups
+    uv sync --no-default-groups
 
 EXPOSE 8000
 ARG ENVIRONMENT=dev
@@ -71,7 +73,7 @@ FROM dev AS ci
 
 USER root
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen && \
+    uv sync && \
     uv pip list
 
 COPY tests tests
