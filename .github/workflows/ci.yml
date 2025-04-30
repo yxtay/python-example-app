@@ -30,6 +30,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       ENVIRONMENT: ci
+      UV_LOCKED: 1
       UV_NO_SYNC: 1
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -55,7 +56,7 @@ jobs:
 
       - run: |
           uv lock --check
-          uv sync --frozen
+          uv sync --locked
           uv pip list
 
       - run: make lint test
