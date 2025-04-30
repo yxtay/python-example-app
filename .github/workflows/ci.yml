@@ -30,7 +30,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       ENVIRONMENT: ci
-      UV_FROZEN: 1
       UV_NO_SYNC: 1
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -55,7 +54,7 @@ jobs:
           "$(Resolve-Path .venv)/Scripts" | Out-File -FilePath "${env:GITHUB_PATH}" -Append
 
       - run: |
-          env -u UV_FROZEN uv lock --check
+          uv lock --check
           uv sync
           uv pip list
 
