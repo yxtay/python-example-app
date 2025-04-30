@@ -55,7 +55,7 @@ jobs:
 
       - run: |
           uv lock --check
-          uv sync
+          uv sync --frozen
           uv pip list
 
       - run: make lint test
