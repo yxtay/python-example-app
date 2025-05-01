@@ -303,6 +303,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - uses: trunk-io/trunk-action@4d5ecc89b2691705fd08c747c78652d2fc806a94 # v1
+        env:
+          INPUT_GITHUB_REF_NAME: ${{ github.event.pull_request.head.ref && format('HEAD:refs/heads/{0}', github.event.pull_request.head.ref) || github.ref_name }}
 
       - if: ${{ failure() && github.event_name == 'pull_request' }}
         uses: trunk-io/trunk-action@4d5ecc89b2691705fd08c747c78652d2fc806a94 # v1
