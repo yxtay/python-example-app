@@ -299,10 +299,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: setup git
+        run: |
+          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name "${GITHUB_ACTOR}"
+          git fetch origin "${GITHUB_HEAD_REF}" --depth 1
+          git switch "${GITHUB_HEAD_REF}"
 
       - uses: trunk-io/trunk-action@4d5ecc89b2691705fd08c747c78652d2fc806a94 # v1
         env:
-          INPUT_AUTOFIX_AND_PUSH: true
+          INPUT_AUTOFIX_AND_PUSH: ${{ github.event_name == 'pull_request' }}
 
       - name: trunk check --fix
         if: ${{ failure() && github.event_name == 'pull_request' }}
