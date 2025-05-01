@@ -303,13 +303,6 @@ jobs:
           fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
-      - name: setup git
-        run: |
-          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
-          git config user.name "${GITHUB_ACTOR}"
-          git fetch origin "${GITHUB_HEAD_REF}" --depth 1
-          git switch "${GITHUB_HEAD_REF}"
-
       - uses: trunk-io/trunk-action@4d5ecc89b2691705fd08c747c78652d2fc806a94 # v1
         env:
           INPUT_AUTOFIX_AND_PUSH: ${{ github.event_name == 'pull_request' }}
