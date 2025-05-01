@@ -301,6 +301,8 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - uses: trunk-io/trunk-action@4d5ecc89b2691705fd08c747c78652d2fc806a94 # v1
+        env:
+          INPUT_AUTOFIX_AND_PUSH: true
 
       - name: trunk check --fix
         if: ${{ failure() && github.event_name == 'pull_request' }}
