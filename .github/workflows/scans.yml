@@ -299,8 +299,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-        with:
-          fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
 
       - uses: trunk-io/trunk-action@4d5ecc89b2691705fd08c747c78652d2fc806a94 # v1
 
@@ -313,7 +311,7 @@ jobs:
           git switch "${GITHUB_HEAD_REF}"
 
           git fetch origin "${DEFAULT_BRANCH}" --depth 1
-          upstream=$(git rev-parse "${DEFAULT_BRANCH}")
+          upstream=$(git rev-parse "origin/${DEFAULT_BRANCH}")
           "${TRUNK_PATH}" check --ci --upstream "${upstream}" --fix
 
           if [[ -n "$(git diff --name-only)" ]]; then
