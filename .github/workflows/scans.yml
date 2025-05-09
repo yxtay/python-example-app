@@ -52,7 +52,6 @@ jobs:
       - run: |
           docker save "${IMAGE_ID}" | podman load
           podman save -o "${GITHUB_SHA}" "${IMAGE_ID}"
-          podman images
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
