@@ -23,12 +23,12 @@ ENV PATH=${VIRTUAL_ENV}/bin:${PATH} \
 
 WORKDIR ${APP_HOME}
 
-# COPY <<-EOF /etc/apt/apt.conf.d/99-disable-recommends
-# APT::Install-Recommends "false";
-# APT::Install-Suggests "false";
-# APT::AutoRemove::RecommendsImportant "false";
-# APT::AutoRemove::SuggestsImportant "false";
-# EOF
+COPY <<-EOF /etc/apt/apt.conf.d/99-disable-recommends
+APT::Install-Recommends "false";
+APT::Install-Suggests "false";
+APT::AutoRemove::RecommendsImportant "false";
+APT::AutoRemove::SuggestsImportant "false";
+EOF
 
 RUN apt-get update && \
     apt-get upgrade --yes && \
