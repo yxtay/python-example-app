@@ -50,7 +50,7 @@ jobs:
           load: true
 
       # - run: docker build -t "${GHCR_IMAGE_NAME}" .
-      - run: docker save -o "${GITHUB_SHA}" "${IMAGE_ID}"
+      - run: podman save -o "${GITHUB_SHA}" "${IMAGE_ID}"
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
