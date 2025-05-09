@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-from typing import ClassVar
 
 import gunicorn.app.wsgiapp
 import uvicorn.workers
@@ -21,7 +20,7 @@ class GunicornLogger(glogging.Logger):
 
 
 class UvicornWorker(uvicorn.workers.UvicornWorker):
-    CONFIG_KWARGS: ClassVar[dict[str, str]] = {"loop": "asyncio", "http": "auto"}
+    CONFIG_KWARGS: dict[str, str] = {"loop": "asyncio", "http": "auto"}  # noqa: RUF012
 
 
 class Application(gunicorn.app.wsgiapp.WSGIApplication):
