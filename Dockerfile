@@ -1,7 +1,7 @@
 ##
 # base
 ##
-FROM python:3.13-slim@sha256:60248ff36cf701fcb6729c085a879d81e4603f7f507345742dc82d4b38d16784 AS base
+FROM debian:stable-slim@sha256:88f88a2b8bd1873876a2ff15df523a66602aa57177e24b5f22064c4886ec398a AS base
 LABEL maintainer="wyextay@gmail.com"
 
 # set up user
@@ -15,6 +15,7 @@ ARG VIRTUAL_ENV=${APP_HOME}/.venv
 ENV PATH=${VIRTUAL_ENV}/bin:${PATH} \
     PYTHONFAULTHANDLER=1 \
     PYTHONUNBUFFERED=1 \
+    UV_PYTHON_INSTALL_DIR=/opt \
     VIRTUAL_ENV=${VIRTUAL_ENV}
 
 WORKDIR ${APP_HOME}
@@ -32,9 +33,7 @@ APT::AutoRemove::RecommendsImportant "false";
 APT::AutoRemove::SuggestsImportant "false";
 EOF
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install --yes --no-install-recommends \
         build-essential=12.9 \
         curl=7.88.1-10+deb12u12 \
@@ -47,18 +46,15 @@ ENV UV_LOCKED=1 \
 
 # set up python
 COPY --from=ghcr.io/astral-sh/uv:latest@sha256:87a04222b228501907f487b338ca6fc1514a93369bfce6930eb06c8d576e58a4 /uv /uvx /bin/
-COPY pyproject.toml uv.lock ./
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv venv --seed "${VIRTUAL_ENV}" && \
-    uv sync --no-default-groups --no-install-project && \
+COPY .python-version pyproject.toml uv.lock ./
+RUN uv sync --no-default-groups --no-install-project && \
     chown -R "${USER}:${USER}" "${VIRTUAL_ENV}" && \
     chown -R "${USER}:${USER}" "${APP_HOME}" && \
     uv pip list
 
 # set up project
 COPY src src
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --no-default-groups
+RUN uv sync --no-default-groups
 
 EXPOSE 8000
 ARG ENVIRONMENT=dev
@@ -72,8 +68,7 @@ CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf", "--reload"]
 FROM dev AS ci
 
 USER root
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync && \
+RUN uv sync && \
     uv pip list
 
 COPY tests tests
@@ -90,6 +85,7 @@ FROM base AS prod
 
 # set up project
 USER ${USER}
+COPY --from=dev ${UV_PYTHON_INSTALL_DIR} ${UV_PYTHON_INSTALL_DIR}
 COPY --from=dev ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 COPY --from=dev ${APP_HOME} ${APP_HOME}
 

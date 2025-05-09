@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import multiprocessing
+
 import rich
 import typer
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -12,10 +14,10 @@ class Settings(BaseSettings):
     # gunicorn
     host: str = "127.0.0.1"  # devskim: ignore DS162092
     port: int = 8000
-    web_concurrency: int = 2
+    web_concurrency: int = 2 * multiprocessing.cpu_count() + 1
 
     # logging
-    loguru_level: str = "debug"
+    loguru_level: str = "info"
     loguru_enqueue: bool = True
 
     model_config = SettingsConfigDict(env_file=".env")
