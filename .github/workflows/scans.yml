@@ -55,6 +55,10 @@ jobs:
           tag: localhost:5000/${{ github.repository }}:latest
           load: true
 
+      - run: docker save -o ${IMAGE_ID} ${IMAGE_ID}
+        env:
+          IMAGE_ID: ${{ steps.build.outputs.imageid }}
+
       # - uses: quay/clair-action@08810958361ae9d2a2a625facc0e0fc88bea5e8a # V0
       #   with:
       #     db-file: matcher.db
@@ -62,7 +66,7 @@ jobs:
 
       - uses: quay/clair-action@08810958361ae9d2a2a625facc0e0fc88bea5e8a # V0
         with:
-          image-ref: localhost:5000/${{ github.repository }}:latest
+          image-path: ${{ env.IMAGE_ID }}
           output: clair_results.sarif
           db-file: matcher.db
         env:
