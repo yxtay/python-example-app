@@ -22,6 +22,11 @@ ENV PATH=${VIRTUAL_ENV}/bin:${PATH} \
 
 WORKDIR ${APP_HOME}
 
+RUN apt-get update && \
+    apt-get upgrade --yes && \
+    apt-get install --yes --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
 ##
 # dev
 ##
@@ -36,9 +41,7 @@ APT::AutoRemove::SuggestsImportant "false";
 EOF
 
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
-        build-essential \
-        curl \
+    apt-get install --yes --no-install-recommends build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 ARG PYTHONDONTWRITEBYTECODE=1
@@ -63,8 +66,6 @@ ARG ENVIRONMENT=dev
 ENV ENVIRONMENT=${ENVIRONMENT}
 USER ${USER}
 CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf", "--reload"]
-
-HEALTHCHECK CMD ["curl", "-f", "http://localhost/"]
 
 ##
 # ci
@@ -130,3 +131,5 @@ EXPOSE 8000
 ARG ENVIRONMENT=prod
 ENV ENVIRONMENT=${ENVIRONMENT}
 CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf"]
+
+HEALTHCHECK CMD ["curl", "-f", "http://localhost/"]
