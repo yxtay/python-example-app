@@ -1,4 +1,4 @@
 if __name__ == "__main__":
-    from .gunicorn import Application
+    from example_app.gunicorn import Application
 
     Application().run()

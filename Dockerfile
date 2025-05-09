@@ -1,3 +1,4 @@
+# hadolint global ignore=DL3008
 ##
 # base
 ##
@@ -7,7 +8,7 @@ LABEL maintainer="wyextay@gmail.com"
 # set up user
 ARG USER=user
 ARG UID=1000
-RUN useradd --create-home --shell /bin/false --uid ${UID} ${USER}
+RUN useradd --shell /bin/false --uid ${UID} ${USER}
 
 # set up environment
 ARG APP_HOME=/work/app
@@ -35,8 +36,8 @@ EOF
 
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends \
-        build-essential=12.9 \
-        curl=7.88.1-10+deb12u12 \
+        build-essential \
+        curl \
     && rm -rf /var/lib/apt/lists/*
 
 ARG PYTHONDONTWRITEBYTECODE=1
@@ -77,6 +78,39 @@ COPY Makefile Makefile
 USER ${USER}
 RUN mkdir -p "${HOME}/.cache"
 CMD ["make", "lint", "test"]
+
+##
+# compile
+##
+FROM dev AS compile
+
+USER root
+RUN apt-get update && \
+    apt-get install --yes --no-install-recommends \
+    binutils \
+    patchelf \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN uv pip install scons && \
+    uv sync --group compile && \
+    uv pip list
+
+COPY main.py main.py
+RUN pyinstaller --hidden-import example_app.main --onefile main.py && \
+    staticx --strip dist/main /main
+
+USER user
+ENTRYPOINT [ "/dist/main" ]
+
+##
+# scratch
+##
+FROM scratch AS minimal
+
+COPY --from=compile /tmp /tmp
+COPY --from=compile /main /main
+
+ENTRYPOINT [ "/main" ]
 
 ##
 # prod

@@ -26,6 +26,11 @@ dev = [
   "pytest-mock~=3.14",
   "pytest-xdist~=3.6",
 ]
+compile = [
+  "pyinstaller~=6.13 ; sys_platform == 'linux'",
+  "scons~=4.9 ; sys_platform == 'linux'",
+  "staticx~=0.14 ; sys_platform == 'linux'",
+]
 
 [tool.isort]
 profile = "black"
