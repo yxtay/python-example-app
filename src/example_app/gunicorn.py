@@ -6,7 +6,7 @@ import gunicorn.app.wsgiapp
 import uvicorn.workers
 from gunicorn import config, glogging
 
-from .logger import InterceptHandler, get_logger
+from .logger import InterceptHandler
 from .settings import settings
 
 
@@ -14,7 +14,6 @@ class GunicornLogger(glogging.Logger):
     def __init__(self: GunicornLogger, cfg: config.Config) -> None:
         super().__init__(cfg)
 
-        get_logger()
         for name in ["gunicorn.error", "gunicorn.access"]:
             logging.getLogger(name).handlers = [InterceptHandler(depth=1)]
 

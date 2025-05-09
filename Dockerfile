@@ -92,7 +92,7 @@ RUN apt-get update && \
     patchelf \
     && rm -rf /var/lib/apt/lists/*
 
-RUN uv pip install scons && \
+RUN uv pip install scons~=4.9 && \
     uv sync --group compile && \
     uv pip list
 
