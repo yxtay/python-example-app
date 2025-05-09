@@ -64,6 +64,8 @@ ENV ENVIRONMENT=${ENVIRONMENT}
 USER ${USER}
 CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf", "--reload"]
 
+HEALTHCHECK CMD ["curl", "-f", "http://localhost/"]
+
 ##
 # ci
 ##
@@ -128,5 +130,3 @@ EXPOSE 8000
 ARG ENVIRONMENT=prod
 ENV ENVIRONMENT=${ENVIRONMENT}
 CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf"]
-
-HEALTHCHECK CMD ["curl", "-f", "http://localhost/"]
