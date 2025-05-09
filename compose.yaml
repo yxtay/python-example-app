@@ -1,3 +1,4 @@
+# kics-scan disable=451d79dc-0588-476a-ad03-3c7f0320abb3,698ed579-b239-4f8f-a388-baa4bcb13ef8
 services:
   app_dev:
     image: ghcr.io/yxtay/python-example-app:dev

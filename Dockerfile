@@ -13,6 +13,7 @@ RUN useradd --create-home --shell /bin/false --uid ${UID} ${USER}
 
 # set up environment
 ARG APP_HOME=/work/app
+ARG DEBIAN_FRONTEND=noninteractive
 ARG VIRTUAL_ENV=${APP_HOME}/.venv
 ENV PATH=${VIRTUAL_ENV}/bin:${PATH} \
     PYTHONFAULTHANDLER=1 \
@@ -22,12 +23,6 @@ ENV PATH=${VIRTUAL_ENV}/bin:${PATH} \
 
 WORKDIR ${APP_HOME}
 
-##
-# dev
-##
-FROM base AS dev
-
-ARG DEBIAN_FRONTEND=noninteractive
 COPY <<-EOF /etc/apt/apt.conf.d/99-disable-recommends
 APT::Install-Recommends "false";
 APT::Install-Suggests "false";
@@ -36,9 +31,17 @@ APT::AutoRemove::SuggestsImportant "false";
 EOF
 
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
-        build-essential \
-        curl \
+    apt-get upgrade --yes && \
+    apt-get install --yes --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
+##
+# dev
+##
+FROM base AS dev
+
+RUN apt-get update && \
+    apt-get install --yes --no-install-recommends build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 ARG PYTHONDONTWRITEBYTECODE=1
