@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-import atexit
 import inspect
 import logging
-import sys
 
 import loguru
 from loguru import logger
@@ -36,17 +34,6 @@ class InterceptHandler(logging.Handler):
 
 
 def get_logger() -> loguru.Logger:
-    from .settings import settings
-
-    logger.remove()
-    logger.add(
-        sys.stderr, level=settings.loguru_level.upper(), enqueue=settings.loguru_enqueue
-    )
-    atexit.register(logger.complete)
-
-    logging.basicConfig(
-        level=settings.loguru_level.upper(), handlers=[InterceptHandler()]
-    )
     for name in ["uvicorn.access", "uvicorn.error"]:
         if name in logging.root.manager.loggerDict:
             _logger = logging.getLogger(name)

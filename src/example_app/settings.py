@@ -16,9 +16,8 @@ class Settings(BaseSettings):
     port: int = 8000
     web_concurrency: int = 2 * multiprocessing.cpu_count() + 1
 
-    # logging
-    loguru_level: str = "info"
-    loguru_enqueue: bool = True
+    # loguru
+    loguru_level: str = "INFO"
 
     model_config = SettingsConfigDict(env_file=".env")
 
