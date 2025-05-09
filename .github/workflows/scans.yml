@@ -46,10 +46,11 @@ jobs:
       - id: build
         uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1 # v6
         with:
+          tag: ${{ env.GHCR_IMAGE_NAME }}:${{ github.sha }}
           cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
           load: true
 
-      - run: docker save -o ${GITHUB_SHA} ${IMAGE_ID}
+      - run: docker save -o "${GITHUB_SHA}" "${GHCR_IMAGE_NAME}:${GITHUB_SHA}"
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
