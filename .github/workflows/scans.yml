@@ -38,11 +38,6 @@ jobs:
       security-events: write
 
     runs-on: ubuntu-latest
-    services:
-      registry:
-        image: registry:2
-        ports:
-          - 5000:5000
     env:
       GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
     steps:
@@ -52,7 +47,6 @@ jobs:
         uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1 # v6
         with:
           cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
-          tag: localhost:5000/${{ github.repository }}:latest
           load: true
 
       - run: docker save -o ${GITHUB_SHA} ${IMAGE_ID}
@@ -66,7 +60,7 @@ jobs:
 
       - uses: quay/clair-action@08810958361ae9d2a2a625facc0e0fc88bea5e8a # V0
         with:
-          image-path: ${{ env.GITHUB_SHA }}
+          image-path: ${{ github.sha }}
           output: clair_results.sarif
           db-file: matcher.db
 
