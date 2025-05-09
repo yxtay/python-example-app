@@ -38,6 +38,11 @@ jobs:
       security-events: write
 
     runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     env:
       GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
     steps:
