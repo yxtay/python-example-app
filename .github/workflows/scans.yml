@@ -52,12 +52,13 @@ jobs:
       - run: |
           docker save "${IMAGE_ID}" | podman load
           podman save -o "${GITHUB_SHA}" "${IMAGE_ID}"
+          podman images
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
       - uses: quay/clair-action@08810958361ae9d2a2a625facc0e0fc88bea5e8a # V0
         with:
-          image-ref: ${{ github.sha }}
+          image-path: ${{ github.sha }}
           output: clair_results.sarif
           db-file: matcher.db
 
