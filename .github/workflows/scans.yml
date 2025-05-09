@@ -51,8 +51,14 @@ jobs:
 
       - uses: quay/clair-action@3c05ed02efcfdd9a2aecbd1411754fb1d5927194 # V0
         with:
+          db-file: matcher.db
+          mode: update
+
+      - uses: quay/clair-action@3c05ed02efcfdd9a2aecbd1411754fb1d5927194 # V0
+        with:
           image-ref: ${{ env.IMAGE_ID }}
           output: clair_results.sarif
+          db-file: matcher.db
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
