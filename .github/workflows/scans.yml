@@ -39,7 +39,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}:main
+      GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
