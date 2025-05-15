@@ -400,12 +400,12 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
-      - uses: trunk-io/trunk-action@06c428bf05832198443baab1096754b166a6c466 # v1
+      - uses: trunk-io/trunk-action@b8812b3da2f527db878ef7541c4177f8d280cd89 # v1
         env:
           INPUT_GITHUB_REF_NAME: ${{ github.event.pull_request.head.ref || github.ref_name }}
 
       - if: ${{ failure() && github.event_name == 'pull_request' }}
-        uses: trunk-io/trunk-action@06c428bf05832198443baab1096754b166a6c466 # v1
+        uses: trunk-io/trunk-action@b8812b3da2f527db878ef7541c4177f8d280cd89 # v1
         env:
           INPUT_AUTOFIX_AND_PUSH: true
           INPUT_GITHUB_REF_NAME: ${{ format('HEAD:refs/heads/{0}', github.event.pull_request.head.ref) }}
