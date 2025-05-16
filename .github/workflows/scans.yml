@@ -393,12 +393,19 @@ jobs:
     permissions:
       checks: write
       contents: write
+      issues: write # create labels
+      pull-requests: write
 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - if: ${{ github.event_name == 'pull_request' && !contains(github.event.pull_request.title, 'upgrade trunk') }}
+        uses: trunk-io/trunk-action/upgrade@b8812b3da2f527db878ef7541c4177f8d280cd89 # v1
+        with:
+          prefix: "ci: "
 
       - uses: trunk-io/trunk-action@b8812b3da2f527db878ef7541c4177f8d280cd89 # v1
         env:
