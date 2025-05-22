@@ -26,8 +26,9 @@
       "matchUpdateTypes": ["minor"]
     },
     {
+      "groupName": "kics-github-action",
       "matchPackageNames": ["checkmarx/kics-github-action"],
-      "allowedVersions": "!/^(2.1.8|c456d04)$/"
+      "allowedVersions": "!/^c456d04.*$/"
     }
   ]
 }
