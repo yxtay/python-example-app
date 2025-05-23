@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 name = "example-app"
 version = "0.1.0"
 description = "Python example app incorporating best practices"
-authors = [{ name = "yxtay", email = "wyextay@gmail.com" }]
+authors = [{ name = "yxtay", email = "5795122+yxtay@users.noreply.github.com" }]
 license = "MIT"
 requires-python = "~=3.11"
 dependencies = [
