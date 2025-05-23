@@ -56,7 +56,7 @@ jobs:
 
       - run: |
           uv lock --check
-          uv sync --locked
+          uv sync
           uv pip list
 
       - run: make lint test
@@ -102,7 +102,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ github.token }}
 
       - if: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
         uses: docker/build-push-action@1dc73863535b631f98b2378be8619f83b136f4a0 # v6
