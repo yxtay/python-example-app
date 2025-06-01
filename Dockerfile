@@ -1,5 +1,4 @@
 # hadolint global ignore=DL3008
-# kics-scan disable=965a08d7-ef86-4f14-8792-4a3b2098937e
 ##
 # base
 ##
