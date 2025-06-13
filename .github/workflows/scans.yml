@@ -430,7 +430,7 @@ jobs:
           separator: ","
 
       - if: ${{ steps.changed-files.outputs.all_changed_files != '' }}
-        uses: checkmarx/vorpal-reviewdog-github-action@e1d13fe263794580947b3cfa456b9140bbfb1a81 # v1
+        uses: checkmarx/vorpal-reviewdog-github-action@8cc292f337a2f1dea581b4f4bd73852e7becb50d # v1
         with:
           source_path: ${{ steps.changed-files.outputs.all_changed_files }}
           reporter: github-pr-check
