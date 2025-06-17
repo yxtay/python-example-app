@@ -382,7 +382,7 @@ jobs:
         with:
           fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
 
-      - uses: trufflesecurity/trufflehog@52d0ee5f5419ca938d3b7e358fe6f32131565026 # v3
+      - uses: trufflesecurity/trufflehog@6641d4ba5b684fffe195b9820345de1bf19f3181 # v3
         with:
           extra_args: --results=verified,unknown
 
