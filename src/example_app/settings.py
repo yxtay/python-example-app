@@ -6,6 +6,8 @@ import rich
 import typer
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from .logger import get_logger
+
 
 class Settings(BaseSettings):
     app_name: str = "example_app"
@@ -28,8 +30,6 @@ app = typer.Typer()
 
 @app.command()
 def main(key: str) -> str:
-    from .logger import get_logger
-
     logger = get_logger()
 
     try:
