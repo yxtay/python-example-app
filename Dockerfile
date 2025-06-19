@@ -5,7 +5,6 @@ FROM ghcr.io/astral-sh/uv:0.7.13@sha256:6c1e19020ec221986a210027040044a5df8de762
 # base
 ##
 FROM debian:stable-slim@sha256:50db38a20a279ccf50761943c36f9e82378f92ef512293e1239b26bb77a8b496 AS base
-LABEL org.opencontainers.image.authors="5795122+yxtay@users.noreply.github.com"
 
 # set up user
 ARG USER=user
@@ -17,13 +16,13 @@ ARG APP_HOME=/work/app
 ARG DEBIAN_FRONTEND=noninteractive
 ARG VIRTUAL_ENV=${APP_HOME}/.venv
 ENV PATH=${VIRTUAL_ENV}/bin:${PATH} \
-    PYTHONFAULTHANDLER=1 \
-    PYTHONUNBUFFERED=1 \
-    UV_LOCKED=1 \
-    UV_NO_SYNC=1 \
-    UV_PYTHON_DOWNLOADS=manual \
-    UV_PYTHON_INSTALL_DIR=/opt \
-    VIRTUAL_ENV=${VIRTUAL_ENV}
+  PYTHONFAULTHANDLER=1 \
+  PYTHONUNBUFFERED=1 \
+  UV_LOCKED=1 \
+  UV_NO_SYNC=1 \
+  UV_PYTHON_DOWNLOADS=manual \
+  UV_PYTHON_INSTALL_DIR=/opt/python \
+  VIRTUAL_ENV=${VIRTUAL_ENV}
 
 WORKDIR ${APP_HOME}
 
@@ -35,9 +34,9 @@ APT::AutoRemove::SuggestsImportant "false";
 EOF
 
 RUN apt-get update && \
-    apt-get upgrade --yes && \
-    apt-get install --yes --no-install-recommends curl \
-    && rm -rf /var/lib/apt/lists/*
+  apt-get upgrade --yes && \
+  apt-get install --yes --no-install-recommends curl \
+  && rm -rf /var/lib/apt/lists/*
 
 ##
 # dev
@@ -45,8 +44,8 @@ RUN apt-get update && \
 FROM base AS dev
 
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends build-essential \
-    && rm -rf /var/lib/apt/lists/*
+  apt-get install --yes --no-install-recommends build-essential \
+  && rm -rf /var/lib/apt/lists/*
 
 ARG PYTHONDONTWRITEBYTECODE=1
 ARG UV_NO_CACHE=1
@@ -55,10 +54,10 @@ ARG UV_NO_CACHE=1
 COPY --from=uv /uv /uvx /bin/
 COPY .python-version pyproject.toml uv.lock ./
 RUN uv python install && \
-    uv sync --no-default-groups --no-install-project && \
-    chown -R "${USER}:${USER}" "${VIRTUAL_ENV}" && \
-    chown -R "${USER}:${USER}" "${APP_HOME}" && \
-    uv pip list
+  uv sync --no-default-groups --no-install-project && \
+  chown -R "${USER}:${USER}" "${VIRTUAL_ENV}" && \
+  chown -R "${USER}:${USER}" "${APP_HOME}" && \
+  uv pip list
 
 # set up project
 COPY src src
@@ -77,7 +76,7 @@ FROM dev AS ci
 
 USER root
 RUN uv sync && \
-    uv pip list
+  uv pip list
 
 COPY tests tests
 COPY Makefile Makefile
@@ -93,18 +92,18 @@ FROM dev AS compile
 
 USER root
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
-    binutils \
-    patchelf \
-    && rm -rf /var/lib/apt/lists/*
+  apt-get install --yes --no-install-recommends \
+  binutils \
+  patchelf \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN uv pip install --no-cache-dir scons~=4.9 && \
-    uv sync --group compile && \
-    uv pip list
+  uv sync --group compile && \
+  uv pip list
 
 COPY main.py main.py
 RUN pyinstaller --hidden-import example_app.main --onefile main.py && \
-    staticx --strip dist/main /main
+  staticx --strip dist/main /main
 
 USER ${USER}
 ENTRYPOINT [ "/dist/main" ]
