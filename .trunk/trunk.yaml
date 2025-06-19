@@ -18,7 +18,7 @@ runtimes:
 lint:
   enabled:
     - actionlint@1.7.7
-    - bandit@1.8.3
+    - bandit@1.8.5
     - biome@1.9.4
     - black@25.1.0
     - checkov@3.2.442
@@ -27,11 +27,11 @@ lint:
     - isort@6.0.1
     - markdownlint@0.45.0
     - prettier@3.5.3
-    - renovate@40.57.1
-    - ruff@0.11.13
+    - renovate@40.60.3
+    - ruff@0.12.0
     - taplo@0.9.3
     - trivy@0.63.0
-    - trufflehog@3.89.1
+    - trufflehog@3.89.2
     - yamllint@1.37.1
 actions:
   disabled:
