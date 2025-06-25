@@ -26,8 +26,8 @@ lint:
     - hadolint@2.12.1-beta
     - isort@6.0.1
     - markdownlint@0.45.0
-    - prettier@3.6.0
-    - renovate@41.7.1
+    - prettier@3.6.1
+    - renovate@41.10.0
     - ruff@0.12.0
     - taplo@0.9.3
     - trivy@0.63.0
