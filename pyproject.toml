@@ -24,7 +24,7 @@ dev = [
   "pytest-cov~=6.0",
   "pytest-env~=1.1",
   "pytest-mock~=3.14",
-  "pytest-xdist~=3.6",
+  "pytest-xdist[psutil]~=3.6",
 ]
 compile = [
   "pyinstaller~=6.13 ; sys_platform == 'linux'",
@@ -48,6 +48,7 @@ addopts = [
   "--strict-markers",
   "--import-mode=importlib",
   "--cov=src",
+  "--numprocesses=logical",
 ]
 
 [tool.ruff]
