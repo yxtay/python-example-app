@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - uses: bridgecrewio/checkov-action@1f2e259aa3708b9c7fe05e879fcd1035381c63de # master
+      - uses: bridgecrewio/checkov-action@ab873be0f4ad14e272192e1a22f5f56d29096424 # master
 
       - if: ${{ success() || failure() }}
         uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3
@@ -382,7 +382,7 @@ jobs:
         with:
           fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
 
-      - uses: trufflesecurity/trufflehog@907ac64fd42b18dab2ceba2fda39834d3f8ba7e3 # v3
+      - uses: trufflesecurity/trufflehog@a05cf0859455b5b16317ee22d809887a4043cdf0 # v3
         with:
           extra_args: --results=verified,unknown
 
