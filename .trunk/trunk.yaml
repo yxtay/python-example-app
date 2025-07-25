@@ -22,17 +22,17 @@ lint:
     - bandit@1.8.6
     - biome@1.9.4
     - black@25.1.0
-    - checkov@3.2.451
+    - checkov@3.2.454
     - git-diff-check
     - hadolint@2.12.1-beta
     - isort@6.0.1
     - markdownlint@0.45.0
     - prettier@3.6.2
-    - renovate@41.42.2
+    - renovate@41.43.0
     - ruff@0.12.4
     - taplo@0.9.3
     - trivy@0.64.1
-    - trufflehog@3.90.1
+    - trufflehog@3.90.2
     - yamllint@1.37.1
 actions:
   disabled:
