@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - uses: bridgecrewio/checkov-action@555b1fe117f21ed74b66d7d0182824d382e3c5ef # master
+      - uses: bridgecrewio/checkov-action@c903af70b3b45a75049af3b64f5e15db11ea76de # master
 
       - if: ${{ success() || failure() }}
         uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3
@@ -175,7 +175,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - uses: checkmarx/kics-github-action@3545b741daf8fc816b081261995184aa12a247c0 # v2
+      - uses: checkmarx/kics-github-action@cd1f3774406f7818e3f79b77b093fe2ebaaf5c1d # v2
         with:
           enable_annotations: true
           enable_comments: true
