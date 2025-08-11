@@ -26,6 +26,8 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - uses: bridgecrewio/checkov-action@562029b35f14a3859b4cc88d4e5308c440867d5f # master
+        with:
+          soft_fail: ${{ github.event_name != 'pull_request' }}
 
       - if: ${{ success() || failure() }}
         uses: github/codeql-action/upload-sarif@76621b61decf072c1cee8dd1ce2d2a82d33c17ed # v3
@@ -59,6 +61,7 @@ jobs:
         with:
           image-path: ${{ github.sha }}
           output: clair_results.sarif
+          return-code: ${{ github.event_name == 'pull_request' && 1 || 0 }}
           db-file: matcher.db
 
       - if: ${{ success() || failure() }}
@@ -125,6 +128,7 @@ jobs:
         uses: anchore/scan-action@1638637db639e0ade3258b51db49a9a137574c3e # v6
         with:
           path: .
+          fail-build: ${{ github.event_name == 'pull_request' }}
           severity-cutoff: high
           only-fixed: true
 
@@ -154,6 +158,7 @@ jobs:
         uses: anchore/scan-action@1638637db639e0ade3258b51db49a9a137574c3e # v6
         with:
           image: ${{ env.IMAGE_ID }}
+          fail-build: ${{ github.event_name == 'pull_request' }}
           severity-cutoff: high
           only-fixed: true
         env:
@@ -294,6 +299,7 @@ jobs:
         uses: anchore/scan-action@1638637db639e0ade3258b51db49a9a137574c3e # v6
         with:
           sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
+          fail-build: ${{ github.event_name == 'pull_request' }}
           severity-cutoff: high
           only-fixed: true
 
@@ -314,8 +320,6 @@ jobs:
       - uses: aquasecurity/trivy-action@dc5a429b52fcf669ce959baa2c2dd26090d2a6c4 # 0.30
         with:
           scan-type: fs
-          ignore-unfixed: true
-          severity: HIGH,CRITICAL
           format: github
           output: dependency-results.sbom.json
           github-pat: ${{ github.token }}
@@ -323,11 +327,13 @@ jobs:
       - uses: aquasecurity/trivy-action@dc5a429b52fcf669ce959baa2c2dd26090d2a6c4 # 0.30
         with:
           scan-type: fs
-          ignore-unfixed: true
-          severity: HIGH,CRITICAL
           format: sarif
           output: trivy-results.sarif
+          exit-code: ${{ github.event_name == 'pull_request' && 1 || 0}}
+          ignore-unfixed: true
+          severity: HIGH,CRITICAL
           scanners: vuln,secret,misconfig
+          skip-setup-trivy: true
 
       - uses: github/codeql-action/upload-sarif@76621b61decf072c1cee8dd1ce2d2a82d33c17ed # v3
         with:
@@ -354,8 +360,6 @@ jobs:
       - uses: aquasecurity/trivy-action@dc5a429b52fcf669ce959baa2c2dd26090d2a6c4 # 0.30
         with:
           image-ref: ${{ steps.build.outputs.imageid }}
-          ignore-unfixed: true
-          severity: HIGH,CRITICAL
           format: github
           output: dependency-results.sbom.json
           github-pat: ${{ github.token }}
@@ -363,10 +367,12 @@ jobs:
       - uses: aquasecurity/trivy-action@dc5a429b52fcf669ce959baa2c2dd26090d2a6c4 # 0.30
         with:
           image-ref: ${{ steps.build.outputs.imageid }}
-          ignore-unfixed: true
-          severity: HIGH,CRITICAL
           format: sarif
           output: trivy-results.sarif
+          exit-code: ${{ github.event_name == 'pull_request' && 1 || 0}}
+          ignore-unfixed: true
+          severity: HIGH,CRITICAL
+          skip-setup-trivy: true
 
       - uses: github/codeql-action/upload-sarif@76621b61decf072c1cee8dd1ce2d2a82d33c17ed # v3
         with:
@@ -435,4 +441,4 @@ jobs:
           source_path: ${{ steps.changed-files.outputs.all_changed_files }}
           reporter: github-pr-check
           filter_mode: file
-          fail_on_error: true
+          fail_on_error: ${{ github.event_name == 'pull_request' }}
