@@ -26,6 +26,8 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - uses: bridgecrewio/checkov-action@562029b35f14a3859b4cc88d4e5308c440867d5f # master
+        with:
+          soft_fail: ${{ github.event_name != 'pull_request' }}
 
       - if: ${{ success() || failure() }}
         uses: github/codeql-action/upload-sarif@76621b61decf072c1cee8dd1ce2d2a82d33c17ed # v3
