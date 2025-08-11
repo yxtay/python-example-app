@@ -59,6 +59,7 @@ jobs:
         with:
           image-path: ${{ github.sha }}
           output: clair_results.sarif
+          return-code: ${{ github.event_name == 'pull_request' }}
           db-file: matcher.db
 
       - if: ${{ success() || failure() }}
