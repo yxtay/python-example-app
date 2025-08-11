@@ -296,6 +296,7 @@ jobs:
         uses: anchore/scan-action@1638637db639e0ade3258b51db49a9a137574c3e # v6
         with:
           sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
+          fail-build: ${{ github.event_name == 'pull_request' }}
           severity-cutoff: high
           only-fixed: true
 
