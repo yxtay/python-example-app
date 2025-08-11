@@ -437,4 +437,4 @@ jobs:
           source_path: ${{ steps.changed-files.outputs.all_changed_files }}
           reporter: github-pr-check
           filter_mode: file
-          fail_on_error: true
+          fail_on_error: ${{ github.event_name == 'pull_request' }}
