@@ -180,7 +180,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
-      - uses: checkmarx/kics-github-action@cd1f3774406f7818e3f79b77b093fe2ebaaf5c1d # v2
+      - uses: checkmarx/kics-github-action@71454548efb714daa457caae25c01d64cc0be9d2 # v2
         with:
           enable_annotations: true
           enable_comments: true
