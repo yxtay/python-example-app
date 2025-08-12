@@ -1,5 +1,5 @@
 # hadolint global ignore=DL3008
-FROM ghcr.io/astral-sh/uv:0.8.8@sha256:67b2bcccdc103d608727d1b577e58008ef810f751ed324715eb60b3f0c040d30 AS uv
+FROM ghcr.io/astral-sh/uv:0.8.9@sha256:cda9608307dbbfc1769f3b6b1f9abf5f1360de0be720f544d29a7ae2863c47ef AS uv
 
 ##
 # base
