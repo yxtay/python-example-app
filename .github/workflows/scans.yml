@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
-      - uses: bridgecrewio/checkov-action@afa85d3c6187ef3fdda6368e5e7a2c2247160d66 # master
+      - uses: bridgecrewio/checkov-action@7e3930d7acb8482fd506c495250290b269e2e640 # master
         with:
           soft_fail: ${{ github.event_name != 'pull_request' }}
 
@@ -267,7 +267,7 @@ jobs:
       security-events: write
 
     if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@456ceb78310755116e0a3738121351006286b797 # v2
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@90b209d0ea55cea1da9fc0c4e65782cc6acb6e2e # v2
 
   osv-scan-push:
     permissions:
@@ -276,7 +276,7 @@ jobs:
       security-events: write
 
     if: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@456ceb78310755116e0a3738121351006286b797 # v2
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@90b209d0ea55cea1da9fc0c4e65782cc6acb6e2e # v2
     with:
       fail-on-vuln: false
 
