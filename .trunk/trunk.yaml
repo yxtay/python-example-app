@@ -20,7 +20,7 @@ lint:
     - yamlfmt@0.17.2
     - actionlint@1.7.7
     - bandit@1.8.6
-    - biome@2.2.3
+    - biome@2.2.4
     - black@25.1.0
     - checkov@3.2.470
     - git-diff-check
@@ -28,8 +28,8 @@ lint:
     - isort@6.0.1
     - markdownlint@0.45.0
     - prettier@3.6.2
-    - renovate@41.99.6
-    - ruff@0.12.12
+    - renovate@41.99.11
+    - ruff@0.13.0
     - taplo@0.10.0
     - trivy@0.66.0
     - trufflehog@3.90.6
