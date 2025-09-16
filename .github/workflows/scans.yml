@@ -125,7 +125,7 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - id: grype
-        uses: anchore/scan-action@1638637db639e0ade3258b51db49a9a137574c3e # v6
+        uses: anchore/scan-action@f6601287cdb1efc985d6b765bbf99cb4c0ac29d8 # v7
         with:
           path: .
           fail-build: ${{ github.event_name == 'pull_request' }}
@@ -155,7 +155,7 @@ jobs:
           load: true
 
       - id: grype
-        uses: anchore/scan-action@1638637db639e0ade3258b51db49a9a137574c3e # v6
+        uses: anchore/scan-action@f6601287cdb1efc985d6b765bbf99cb4c0ac29d8 # v7
         with:
           image: ${{ env.IMAGE_ID }}
           fail-build: ${{ github.event_name == 'pull_request' }}
@@ -296,7 +296,7 @@ jobs:
           dependency-snapshot: true
 
       - id: grype
-        uses: anchore/scan-action@1638637db639e0ade3258b51db49a9a137574c3e # v6
+        uses: anchore/scan-action@f6601287cdb1efc985d6b765bbf99cb4c0ac29d8 # v7
         with:
           sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
           fail-build: ${{ github.event_name == 'pull_request' }}
