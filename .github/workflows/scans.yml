@@ -57,7 +57,7 @@ jobs:
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
-      - uses: quay/clair-action@8d04eb42a68736b5ab8a58d014b46c5a58d9a7f4 # V0
+      - uses: quay/clair-action@245a8b4849f75301205a93f8e6c4b8a6626fd55f # V0
         with:
           image-path: ${{ github.sha }}
           output: clair_results.sarif
@@ -290,7 +290,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
-      - uses: anchore/sbom-action@da167eac915b4e86f08b264dbdbc867b61be6f0c # v0
+      - uses: anchore/sbom-action@f8bdd1d8ac5e901a77a92f111440fdb1b593736b # v0
         with:
           output-file: "${{ github.event.repository.name }}-sbom.spdx.json"
           dependency-snapshot: true
