@@ -28,8 +28,8 @@ lint:
     - isort@6.0.1
     - markdownlint@0.45.0
     - prettier@3.6.2
-    - renovate@41.130.1
-    - ruff@0.13.1
+    - renovate@41.131.4
+    - ruff@0.13.2
     - taplo@0.10.0
     - trivy@0.66.0
     - trufflehog@3.90.8
