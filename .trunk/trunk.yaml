@@ -29,7 +29,7 @@ lint:
     - markdownlint@0.45.0
     - prettier@3.6.2
     - renovate@41.132.5
-    - ruff@0.13.2
+    - ruff@0.13.3
     - taplo@0.10.0
     - trivy@0.67.0
     - trufflehog@3.90.8
