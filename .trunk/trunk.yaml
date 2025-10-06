@@ -22,13 +22,13 @@ lint:
     - bandit@1.8.6
     - biome@2.2.5
     - black@25.9.0
-    - checkov@3.2.473
+    - checkov@3.2.474
     - git-diff-check
     - hadolint@2.14.0
     - isort@6.1.0
     - markdownlint@0.45.0
     - prettier@3.6.2
-    - renovate@41.132.5
+    - renovate@41.135.5
     - ruff@0.13.3
     - taplo@0.10.0
     - trivy@0.67.0
