@@ -291,7 +291,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
-      - uses: anchore/sbom-action@d8a2c0130026bf585de5c176ab8f7ce62d75bf04 # v0
+      - uses: anchore/sbom-action@aa0e114b2e19480f157109b9922bda359bd98b90 # v0
         with:
           output-file: "${{ github.event.repository.name }}-sbom.spdx.json"
           dependency-snapshot: true
