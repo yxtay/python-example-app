@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Python example app incorporating best practices"
 authors = [{ name = "yxtay", email = "5795122+yxtay@users.noreply.github.com" }]
 license = "MIT"
-requires-python = "~=3.11"
+requires-python = ">=3.11,<4.0"
 dependencies = [
   "fastapi[all]>=0.115",
   "gunicorn>=23.0",
