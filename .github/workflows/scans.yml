@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
-      - uses: bridgecrewio/checkov-action@d146511ffb733a9a456c9ffc05cd462122037354 # master
+      - uses: bridgecrewio/checkov-action@5abded944c5e3fb597c3fcb4f2a5aa83d9c73f8b # master
         with:
           soft_fail: ${{ github.event_name != 'pull_request' }}
 
@@ -57,7 +57,7 @@ jobs:
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
-      - uses: quay/clair-action@64b45586ee8593ae91ee5b32e05ee8bed6d9dfac # V0
+      - uses: quay/clair-action@cf7ab236a1b0ce7f85ccbe23f050f1c2dd4acdab # V0
         with:
           image-path: ${{ github.sha }}
           output: clair_results.sarif
