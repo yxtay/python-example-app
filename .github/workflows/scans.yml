@@ -25,12 +25,12 @@ jobs:
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
 
-      - uses: bridgecrewio/checkov-action@de3c276ef8118f7ce6bcb2e51d8dd3d65ac0ae36 # master
+      - uses: bridgecrewio/checkov-action@2b3c20ea200d530ec8d3d6a21cad1d01c1f5413a # master
         with:
           soft_fail: ${{ github.event_name != 'pull_request' }}
 
       - if: ${{ success() || failure() }}
-        uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+        uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: results.sarif
 
@@ -65,7 +65,7 @@ jobs:
           db-file: matcher.db
 
       - if: ${{ success() || failure() }}
-        uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+        uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: clair_results.sarif
 
@@ -80,7 +80,7 @@ jobs:
 
       - uses: microsoft/DevSkim-Action@4b5047945a44163b94642a1cecc0d93a3f428cc6 # v1
 
-      - uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+      - uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: devskim-results.sarif
 
@@ -111,7 +111,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - if: ${{ success() || failure() }}
-        uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+        uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: results.sarif
 
@@ -133,7 +133,7 @@ jobs:
           only-fixed: true
 
       - if: ${{ success() || failure() }}
-        uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+        uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: ${{ steps.grype.outputs.sarif }}
 
@@ -165,7 +165,7 @@ jobs:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
       - if: ${{ success() || failure() }}
-        uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+        uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: ${{ steps.grype.outputs.sarif }}
 
@@ -180,7 +180,7 @@ jobs:
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
 
-      - uses: checkmarx/kics-github-action@86775e425429260b2044a0611f3031e0a0f71b0b # v2
+      - uses: checkmarx/kics-github-action@6b6fc1162a0f06704e4cca6e5f8e008ab20fabe5 # v2
         with:
           enable_annotations: true
           enable_comments: true
@@ -192,7 +192,7 @@ jobs:
           bom: true
 
       - if: ${{ success() || failure() }}
-        uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+        uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: results.sarif
 
@@ -226,7 +226,7 @@ jobs:
           path: megalinter-reports
 
       - if: ${{ success() || failure() }}
-        uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+        uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: megalinter-reports/megalinter-report.sarif
           ref: ${{ github.head_ref && format('refs/heads/{0}', github.head_ref) || github.ref }}
@@ -258,7 +258,7 @@ jobs:
       - uses: microsoft/security-devops-action@08976cb623803b1b36d7112d4ff9f59eae704de0 # v1
         id: msdo
 
-      - uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+      - uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: ${{ steps.msdo.outputs.sarifFile }}
 
@@ -306,7 +306,7 @@ jobs:
           only-fixed: true
 
       - if: ${{ success() || failure() }}
-        uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+        uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: ${{ steps.grype.outputs.sarif }}
 
@@ -337,7 +337,7 @@ jobs:
           scanners: vuln,secret,misconfig
           skip-setup-trivy: true
 
-      - uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+      - uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: trivy-results.sarif
 
@@ -376,7 +376,7 @@ jobs:
           severity: HIGH,CRITICAL
           skip-setup-trivy: true
 
-      - uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4
+      - uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4
         with:
           sarif_file: trivy-results.sarif
 
