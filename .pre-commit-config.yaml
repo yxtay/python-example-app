@@ -50,12 +50,12 @@ repos:
       - id: gitleaks
 
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.8
+    rev: v1.7.9
     hooks:
       - id: actionlint
 
   - repo: https://github.com/editorconfig-checker/editorconfig-checker
-    rev: v3.4.1
+    rev: v3.5.0
     hooks:
       - id: editorconfig-checker
 
@@ -95,7 +95,7 @@ repos:
       - id: taplo-format
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.10
+    rev: 0.9.11
     hooks:
       - id: uv-lock
 
