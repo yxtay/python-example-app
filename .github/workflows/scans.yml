@@ -23,7 +23,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - uses: bridgecrewio/checkov-action@2b3c20ea200d530ec8d3d6a21cad1d01c1f5413a # master
         with:
@@ -43,7 +43,7 @@ jobs:
     env:
       GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - id: build
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
@@ -76,7 +76,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - uses: microsoft/DevSkim-Action@4b5047945a44163b94642a1cecc0d93a3f428cc6 # v1
 
@@ -90,7 +90,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - uses: checkmarx/dustilock@9a0cc4fe3da93f7efb38679896c074dc94d60ac6 # v1
 
@@ -102,7 +102,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
         with:
           fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
 
@@ -122,7 +122,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - id: grype
         uses: anchore/scan-action@3aaf50d765cfcceafa51d322ccb790e40f6cd8c5 # v7
@@ -146,7 +146,7 @@ jobs:
     env:
       GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - id: build
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
@@ -178,7 +178,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - uses: checkmarx/kics-github-action@6b6fc1162a0f06704e4cca6e5f8e008ab20fabe5 # v2
         with:
@@ -205,7 +205,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -253,7 +253,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - uses: microsoft/security-devops-action@08976cb623803b1b36d7112d4ff9f59eae704de0 # v1
         id: msdo
@@ -290,7 +290,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - uses: anchore/sbom-action@fbfd9c6c189226748411491745178e0c2017392d # v0
         with:
@@ -317,7 +317,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.30
         with:
@@ -350,7 +350,7 @@ jobs:
     env:
       GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
         # required for sarif upload
 
       - id: build
@@ -386,7 +386,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
         with:
           fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
 
@@ -401,7 +401,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - id: changed-files
         uses: step-security/changed-files@95b56dadb92a30ca9036f16423fd3c088a71ee94 # v46
