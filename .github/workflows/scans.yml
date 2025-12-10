@@ -57,7 +57,7 @@ jobs:
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
-      - uses: quay/clair-action@0c6fa2fbaa17fd9b5455347d8c28169804460f58 # V0
+      - uses: quay/clair-action@526ec1b38497f85e7f2de98d264ef94fdfb38913 # V0
         with:
           image-path: ${{ github.sha }}
           output: clair_results.sarif
@@ -125,7 +125,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - id: grype
-        uses: anchore/scan-action@40a61b52209e9d50e87917c5b901783d546b12d0 # v7
+        uses: anchore/scan-action@3c9a191a0fbab285ca6b8530b5de5a642cba332f # v7
         with:
           path: .
           fail-build: ${{ github.event_name == 'pull_request' }}
@@ -155,7 +155,7 @@ jobs:
           load: true
 
       - id: grype
-        uses: anchore/scan-action@40a61b52209e9d50e87917c5b901783d546b12d0 # v7
+        uses: anchore/scan-action@3c9a191a0fbab285ca6b8530b5de5a642cba332f # v7
         with:
           image: ${{ env.IMAGE_ID }}
           fail-build: ${{ github.event_name == 'pull_request' }}
@@ -292,13 +292,13 @@ jobs:
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
-      - uses: anchore/sbom-action@fbfd9c6c189226748411491745178e0c2017392d # v0
+      - uses: anchore/sbom-action@43a17d6e7add2b5535efe4dcae9952337c479a93 # v0
         with:
           output-file: "${{ github.event.repository.name }}-sbom.spdx.json"
           dependency-snapshot: true
 
       - id: grype
-        uses: anchore/scan-action@40a61b52209e9d50e87917c5b901783d546b12d0 # v7
+        uses: anchore/scan-action@3c9a191a0fbab285ca6b8530b5de5a642cba332f # v7
         with:
           sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
           fail-build: ${{ github.event_name == 'pull_request' }}
