@@ -57,7 +57,7 @@ jobs:
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
-      - uses: quay/clair-action@9894dc130d2f159ddfa29e93867a0000f5269afd # V0
+      - uses: quay/clair-action@5c49d6aa4b73f499c3da163fc599053e0cf07797 # V0
         with:
           image-path: ${{ github.sha }}
           output: clair_results.sarif
