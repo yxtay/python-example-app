@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - uses: bridgecrewio/checkov-action@f34885219720066007f948b843e747bb136aa223 # master
+      - uses: bridgecrewio/checkov-action@b3c44b4437c93549fc8cfaef9208497ba4955d39 # master
         with:
           soft_fail: ${{ github.event_name != 'pull_request' }}
 
@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - id: build
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
           cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
           load: true
@@ -149,7 +149,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - id: build
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
           cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
           load: true
@@ -269,7 +269,7 @@ jobs:
       security-events: write
 
     if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@2a387edfbe02a11d856b89172f6e978100177eb4 # v2
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@c5996e0193a3df57d695c1b8a1dec2a4c62e8730 # v2
 
   osv-scan-push:
     permissions:
@@ -278,7 +278,7 @@ jobs:
       security-events: write
 
     if: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@2a387edfbe02a11d856b89172f6e978100177eb4 # v2
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@c5996e0193a3df57d695c1b8a1dec2a4c62e8730 # v2
     with:
       fail-on-vuln: false
 
@@ -354,7 +354,7 @@ jobs:
         # required for sarif upload
 
       - id: build
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
           cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
           load: true
@@ -390,7 +390,7 @@ jobs:
         with:
           fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
 
-      - uses: trufflesecurity/trufflehog@7635b24fd512a2e817dd3e9dd661caaf035a079d # v3
+      - uses: trufflesecurity/trufflehog@6961f2bace57ab32b23b3ba40f8f420f6bc7e004 # v3
         with:
           extra_args: --results=verified,unknown
 
