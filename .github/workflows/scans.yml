@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - uses: bridgecrewio/checkov-action@81ec5eb0ef150170f3bda7759e3878fa1a5bd413 # master
+      - uses: bridgecrewio/checkov-action@05d9f3cd4807c3dea7444d4e60dc44ad57928ab5 # master
         with:
           soft_fail: ${{ github.event_name != 'pull_request' }}
 
@@ -390,7 +390,7 @@ jobs:
         with:
           fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
 
-      - uses: trufflesecurity/trufflehog@6961f2bace57ab32b23b3ba40f8f420f6bc7e004 # v3
+      - uses: trufflesecurity/trufflehog@7c0734f987ad0bb30ee8da210773b800ee2016d3 # v3
         with:
           extra_args: --results=verified,unknown
 
