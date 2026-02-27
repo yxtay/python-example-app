@@ -4,8 +4,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query, status
 
-from .dependencies import ServiceDep
-from .schemas import (
+from example_app.dependencies import ServiceDep
+from example_app.schemas import (
     MessageResponse,
     TaskCreate,
     TaskListResponse,
@@ -14,7 +14,6 @@ from .schemas import (
 )
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
-health_router = APIRouter(tags=["health"])
 
 
 @router.post(
@@ -211,16 +210,3 @@ def mark_incomplete(
             detail=f"Task with id {task_id} not found",
         )
     return task
-
-
-# Health check endpoints
-@health_router.get("/readyz", summary="Readiness probe")
-@health_router.get("/livez", summary="Liveness probe")
-@health_router.get("/", summary="Health check")
-async def health_check() -> str:
-    """Health check endpoint.
-
-    Returns:
-        Health status
-    """
-    return "ok"

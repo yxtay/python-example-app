@@ -3,7 +3,6 @@ from __future__ import annotations
 import inspect
 import logging
 
-import loguru
 from loguru import logger
 
 
@@ -33,7 +32,7 @@ class InterceptHandler(logging.Handler):
         )
 
 
-def get_logger() -> loguru.Logger:
+def get_logger() -> logger.__class__:
     for name in ["uvicorn.access", "uvicorn.error"]:
         if name in logging.root.manager.loggerDict:
             _logger = logging.getLogger(name)

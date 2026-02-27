@@ -50,7 +50,7 @@ def test_app_creation() -> None:
 
 def test_health_check(client: TestClient) -> None:
     """Test health check endpoints."""
-    response = client.get("/")
+    response = client.get("/healthz")
     assert response.status_code == 200
     assert response.json() == "ok"
 

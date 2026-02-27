@@ -5,8 +5,7 @@ from fastapi import FastAPI
 
 from .database import create_db_and_tables
 from .logger import get_logger
-from .models import Ok
-from .routes import router as task_router
+from .routes import health_router, tasks_router
 from .settings import settings
 
 
@@ -46,16 +45,9 @@ def fastapi_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # Health check endpoints
-    @app.get("/readyz", tags=["health"])
-    @app.get("/livez", tags=["health"])
-    @app.get("/", tags=["health"])
-    async def health_check() -> Ok:
-        """Health check endpoint."""
-        return Ok()
-
     # Include routers
-    app.include_router(task_router)
+    app.include_router(health_router)
+    app.include_router(tasks_router)
 
     return app
 
