@@ -5,9 +5,9 @@ from typing import Annotated
 from fastapi import Depends
 from sqlmodel import Session
 
-from .database import get_session
-from .repository import TaskRepository
-from .service import TaskService
+from example_app.db.session import get_session
+from example_app.features.tasks.repository import TaskRepository
+from example_app.features.tasks.service import TaskService
 
 # Type aliases for dependency injection
 SessionDep = Annotated[Session, Depends(get_session)]

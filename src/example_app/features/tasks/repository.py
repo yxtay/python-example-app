@@ -1,11 +1,11 @@
-"""Repository layer for data access following repository pattern."""
+"""Task repository for data access."""
 
 from abc import ABC, abstractmethod
 from datetime import UTC, datetime
 
 from sqlmodel import Session, select
 
-from .entities import Task
+from .models import Task
 from .schemas import TaskCreate, TaskUpdate
 
 

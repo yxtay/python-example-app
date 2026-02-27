@@ -1,4 +1,4 @@
-"""Pydantic schemas for request/response models."""
+"""Task request/response schemas."""
 
 from datetime import datetime
 

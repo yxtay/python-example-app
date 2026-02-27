@@ -1,4 +1,4 @@
-"""SQLModel entities for database models."""
+"""Task data models."""
 
 from datetime import UTC, datetime
 

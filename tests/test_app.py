@@ -8,7 +8,7 @@ from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel.pool import StaticPool
 
 from example_app import main
-from example_app.database import get_session
+from example_app.db.session import get_session
 
 
 @pytest.fixture(name="session")

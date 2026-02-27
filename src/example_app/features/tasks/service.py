@@ -1,4 +1,4 @@
-"""Service layer for business logic."""
+"""Task service layer for business logic."""
 
 from .repository import AbstractTaskRepository
 from .schemas import TaskCreate, TaskListResponse, TaskResponse, TaskUpdate

@@ -1,12 +1,12 @@
-"""Database configuration and dependency injection."""
+"""Database session management."""
 
 from collections.abc import Generator
 from pathlib import Path
 
 from sqlmodel import Session, SQLModel, create_engine
 
-from .entities import Task  # noqa: F401
-from .settings import settings
+from example_app.core.config import settings
+from example_app.features.tasks.models import Task  # noqa: F401
 
 # Create database directory if it doesn't exist
 DB_DIR = Path("data")
@@ -24,7 +24,10 @@ engine = create_engine(
 
 
 def create_db_and_tables() -> None:
-    """Create database tables."""
+    """Create database tables.
+
+    Initializes all tables for models that inherit from SQLModel.
+    """
     SQLModel.metadata.create_all(engine)
 
 

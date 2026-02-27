@@ -1,11 +1,11 @@
-"""API routes for Task operations."""
+"""Task API routes."""
 
 from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query, status
 
-from example_app.dependencies import ServiceDep
-from example_app.schemas import (
+from example_app.api.deps import ServiceDep
+from example_app.features.tasks.schemas import (
     MessageResponse,
     TaskCreate,
     TaskListResponse,

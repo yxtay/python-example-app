@@ -1,12 +1,14 @@
+"""FastAPI application factory and lifespan management."""
+
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from .database import create_db_and_tables
-from .logger import get_logger
-from .routes import health_router, tasks_router
-from .settings import settings
+from .api.v1.routes import health, tasks
+from .core.config import settings
+from .core.logger import get_logger
+from .db.session import create_db_and_tables
 
 
 @asynccontextmanager
@@ -46,8 +48,8 @@ def fastapi_app() -> FastAPI:
     )
 
     # Include routers
-    app.include_router(health_router)
-    app.include_router(tasks_router)
+    app.include_router(health.router)
+    app.include_router(tasks.router)
 
     return app
 
