@@ -67,7 +67,7 @@ EXPOSE 8000
 ARG ENVIRONMENT=dev
 ENV ENVIRONMENT=${ENVIRONMENT}
 USER ${USER}
-CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf", "--reload"]
+CMD ["fastapi", "run", "src/example_app/main.py", "--reload"]
 
 ##
 # ci
@@ -132,6 +132,6 @@ COPY --from=dev ${APP_HOME} ${APP_HOME}
 EXPOSE 8000
 ARG ENVIRONMENT=prod
 ENV ENVIRONMENT=${ENVIRONMENT}
-CMD ["gunicorn", "-c", "python:example_app.gunicorn_conf"]
+CMD ["fastapi", "run", "src/example_app/main.py"]
 
 HEALTHCHECK CMD ["curl", "-f", "http://localhost/"]
