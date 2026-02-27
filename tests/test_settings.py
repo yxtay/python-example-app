@@ -1,6 +1,6 @@
 from typer.testing import CliRunner
 
-from example_app.settings import app
+from example_app.core.config import app
 
 
 def test_settings_cli_valid() -> None:
