@@ -11,7 +11,6 @@ license = "MIT"
 requires-python = ">=3.11,<4.0"
 dependencies = [
   "fastapi[all]>=0.115",
-  "gunicorn>=23.0",
   "loguru>=0.7",
   "sqlmodel>=0.0",
   "typer>=0.15",
