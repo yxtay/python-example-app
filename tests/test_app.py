@@ -3,6 +3,7 @@
 from collections.abc import Generator
 
 import pytest
+from fastapi import status
 from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel.pool import StaticPool
@@ -51,14 +52,13 @@ def test_app_creation() -> None:
 def test_health_check(client: TestClient) -> None:
     """Test health check endpoints."""
     response = client.get("/healthz")
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert response.json() == "ok"
 
     response = client.get("/readyz")
-    assert response.status_code == 200
-
+    assert response.status_code == status.HTTP_200_OK
     response = client.get("/livez")
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
 
 
 def test_create_task(client: TestClient) -> None:
@@ -70,7 +70,7 @@ def test_create_task(client: TestClient) -> None:
     }
 
     response = client.post("/tasks", json=task_data)
-    assert response.status_code == 201
+    assert response.status_code == status.HTTP_201_CREATED
 
     data = response.json()
     assert data["title"] == "Test Task"
@@ -87,7 +87,7 @@ def test_list_tasks(client: TestClient) -> None:
     client.post("/tasks", json={"title": "Test Task", "completed": False})
 
     response = client.get("/tasks")
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
 
     data = response.json()
     assert "items" in data
@@ -102,7 +102,7 @@ def test_get_task(client: TestClient) -> None:
     task_id = create_response.json()["id"]
 
     response = client.get(f"/tasks/{task_id}")
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
 
     data = response.json()
     assert data["id"] == task_id
@@ -112,7 +112,7 @@ def test_get_task(client: TestClient) -> None:
 def test_get_nonexistent_task(client: TestClient) -> None:
     """Test getting a nonexistent task."""
     response = client.get("/tasks/999")
-    assert response.status_code == 404
+    assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
 def test_update_task(client: TestClient) -> None:
@@ -124,7 +124,7 @@ def test_update_task(client: TestClient) -> None:
     # Update it
     update_data = {"title": "Updated Title", "completed": True}
     response = client.put(f"/tasks/{task_id}", json=update_data)
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
 
     data = response.json()
     assert data["title"] == "Updated Title"
@@ -139,11 +139,11 @@ def test_delete_task(client: TestClient) -> None:
 
     # Delete it
     response = client.delete(f"/tasks/{task_id}")
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
 
     # Verify it's gone
     get_response = client.get(f"/tasks/{task_id}")
-    assert get_response.status_code == 404
+    assert get_response.status_code == status.HTTP_404_NOT_FOUND
 
 
 def test_mark_complete(client: TestClient) -> None:
@@ -154,7 +154,7 @@ def test_mark_complete(client: TestClient) -> None:
 
     # Mark it complete
     response = client.post(f"/tasks/{task_id}/complete")
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
 
     data = response.json()
     assert data["completed"] is True
@@ -170,7 +170,7 @@ def test_mark_incomplete(client: TestClient) -> None:
 
     # Mark it incomplete
     response = client.post(f"/tasks/{task_id}/incomplete")
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
 
     data = response.json()
     assert data["completed"] is False
@@ -184,12 +184,12 @@ def test_filter_by_completed(client: TestClient) -> None:
 
     # Filter for completed
     response = client.get("/tasks?completed=true")
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert all(item["completed"] for item in data["items"])
 
     # Filter for incomplete
     response = client.get("/tasks?completed=false")
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert all(not item["completed"] for item in data["items"])
