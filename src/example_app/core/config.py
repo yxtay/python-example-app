@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     environment: str = "dev"
 
     # Server configuration
-    host: str = "127.0.0.1"  # devskim: ignore DS162092
+    host: str = "0.0.0.0"  # devskim: ignore DS162092
     port: int = 8000
     web_concurrency: int = 2 * multiprocessing.cpu_count() + 1
 
