@@ -1,18 +1,55 @@
+"""FastAPI application factory and lifespan management."""
+
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
-from .logger import get_logger
-from .models import Ok
-from .settings import settings
+from .api.v1.routes import health, tasks
+from .core.config import settings
+from .core.logger import get_logger
+from .db.session import create_db_and_tables
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    """Application lifespan manager.
+
+    Handles startup and shutdown events for the application.
+
+    Args:
+        app: FastAPI application instance
+
+    Yields:
+        None
+    """
+    # Startup
+    get_logger().info("Starting up application")
+    create_db_and_tables()
+    get_logger().info("Database tables created")
+
+    yield
+
+    # Shutdown
+    get_logger().info("Shutting down application")
 
 
 def fastapi_app() -> FastAPI:
-    app = FastAPI()
+    """Create and configure FastAPI application.
 
-    @app.get("/readyz")
-    @app.get("/livez")
-    @app.get("/")
-    async def ok() -> Ok:
-        return Ok()
+    Returns:
+        Configured FastAPI application
+    """
+    app = FastAPI(
+        title="Task API",
+        description="A simple Task API following repository pattern with dependency injection",
+        version="1.0.0",
+        lifespan=lifespan,
+    )
+
+    # Include routers
+    app.include_router(health.router)
+    app.include_router(tasks.router)
 
     return app
 
