@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - uses: bridgecrewio/checkov-action@4b38516b47b2df46475d84383f9aa2c8ef912aae # master
+      - uses: bridgecrewio/checkov-action@f9b0a2206b0401cad02ac0a66be2a7934a5be838 # master
         with:
           soft_fail: ${{ github.event_name != 'pull_request' }}
 
