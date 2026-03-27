@@ -63,11 +63,11 @@ run-ci: deps-install-python lint test  ## run ci
 
 .PHONY: run-dev
 run-dev:
-	python -m ${APP_NAME}.gunicorn
+	uv run fastapi run src/${APP_NAME}/main.py --reload
 
 .PHONY: run
 run:  ## run main python app
-	python -m gunicorn -c python:${APP_NAME}.gunicorn_conf
+	uv run fastapi run src/${APP_NAME}/main.py
 
 ## docker-compose
 
