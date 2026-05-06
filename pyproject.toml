@@ -19,7 +19,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "mypy~=1.15",
+  "mypy~=2.0",
   "pytest~=9.0",
   "pytest-cov~=7.0",
   "pytest-env~=1.1",
